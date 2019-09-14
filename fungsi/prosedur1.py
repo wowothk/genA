@@ -45,11 +45,11 @@ def decoding(sources, depot, b, a, c ,v):
                             index[0]=kl
                             index[1]=j
                 k=index[0]
-        g[k][j] = min(temp_sources[k], temp_depot[j])
+        g[k][j] = min(temp_a[k], temp_b[j])
         temp_a[k] = temp_a[k]-g[k][j]
         temp_b[j] = temp_b[j]-g[k][j]
-        if temp_sources[k] == 0:
+        if temp_a[k] == 0:
             v[k] = 0
-        if temp_depot[j] == 0:
+        if temp_b[j] == 0:
             v[len(sources)+j]= 0
     return g
