@@ -187,6 +187,7 @@ c = np.array([[3,5,2,4],[6,2,5,1],[4,3,6,5],[2,4,3,2]])
 
 stage1 = priority_based_enc(supplier, plant, sups, D, t, b, 2)
 v1 = stage1.encoding()
+print(v1)
 #stage2 = priority_based_enc(plant, dc, D, W, a, f, 3)
 #v2 = stage2.encoding()
 #stage3 = integer_encoding(dc, customer, W, d, c, q)
