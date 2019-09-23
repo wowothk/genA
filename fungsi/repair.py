@@ -20,32 +20,40 @@ def repair_alg(DOK, DCK, DP, DOP, d_tot_cap, d_tot_dem):
     
     for y in range(len(DCK)):
         temp_dck[y]=DCK[y]
-    
-    if DOP > DP and d_tot_cap >= d_tot_dem:
-        while DOP > DP:
-            if len(temp_dok) != 0:
-                index = randint(0,len(temp_dok)-1)
-                temp = temp_dok[index]
-                del temp_dok[index]
-                temp_dck.append(temp)
-                DOP = len(temp_dok)
-        d_tot_cap = sum(temp_dok)
-        return temp_dok
-#            else:
-#                index = randint(0,len(temp_dok))
-#                temp = temp_dok[index]
-#                del temp_dok[index]
-#                temp_dck.append(temp)
-#        return temp_dok        
-    if (DOP<DP or DOP >= DP) and d_tot_cap< d_tot_dem:
-        while d_tot_cap < d_tot_dem:
-            index = randint(0, len(temp_dck)-1)
-            temp = temp_dck[index]
-            del temp_dck[index]
-            temp_dok.append(temp)
+#    print('dcl  ', len(temp_dck))
+    while DOP != DP or d_tot_cap < d_tot_dem:    
+        if DOP > DP and d_tot_cap >= d_tot_dem:
+            while DOP > DP:
+                if len(temp_dok) != 0:
+                    index = randint(0,len(temp_dok)-1)
+                    temp = temp_dok[index]
+                    del temp_dok[index]
+                    temp_dck.append(temp)
+                    DOP = len(temp_dok)
             d_tot_cap = sum(temp_dok)
-        DOP = len(temp_dok)
-        return temp_dok
+            
+    #        return temp_dok
+    #            else:
+    #                index = randint(0,len(temp_dok))
+    #                temp = temp_dok[index]
+    #                del temp_dok[index]
+    #                temp_dck.append(temp)
+    #        return temp_dok        
+            
+        if (DOP<DP or DOP >= DP) and d_tot_cap< d_tot_dem:
+            while d_tot_cap < d_tot_dem:
+                if len(temp_dck) != 0:
+    #                index = randint(0, len(temp_dck))
+    #            else:
+                    index = randint(0, len(temp_dck)-1)
+    #                print('temp_dck    ', temp_dck)
+    #                print('index   ' ,index)
+                    temp = temp_dck[index]
+                    del temp_dck[index]
+                    temp_dok.append(temp)
+                d_tot_cap = sum(temp_dok)
+            DOP = len(temp_dok)
+    return temp_dok
     
 
 #sumber = ['s1', 's2', 's3']

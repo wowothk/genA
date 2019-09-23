@@ -203,10 +203,12 @@ class create:
                     while sum(f[:, j] != sum(q[j])): #bisa jadi salah
                         for k in range(len(self.K)):
                             for x in range(len(self.J)):
+                                temp =0
                                 if p[k] == 0 or z[x] == 0:
                                     f[k][x] = 0
                                 else:
-                                    f[k][x] = random.randint(0, self.K[k])
+                                    f[k][x] = random.randint(0, sum(q[j])-temp)
+                                    temp = temp + f[k][x]
         print("nilai p    ", p)                    
         print("nilai f sebelum dummy ", f)
         temp = [0]*len(self.K)

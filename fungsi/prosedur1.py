@@ -21,18 +21,20 @@ def decoding(sources, depot, b, a, c ,v):
     i=0 
     while sum(v[len(sources):]) !=0: #dari prosedur yang diberikan didapat bahwasanya syaratnya bukan perihal semua v sama dengna 0
 #        i=i+1
-#        print(i)
+#        print('iterasi  ',i)
         temp_c =0
-        for x in range(len(v)): 
+        for x in range(len(v)):
             if v[x] == max(v) and x < len(sources):
                 k = x
                 for jl in range(len(depot)):
+#                    print('iterasine j  ', jl)
                     if v[len(sources)+jl] != 0:
                         if temp_c == 0:
                             temp_c = c[k][jl]
                             index[0]=k
                             index[1]=jl
-                        elif c[k][j] < temp_c:
+                        elif c[k][jl] < temp_c:
+#                            print('hai')
                             temp_c = c[k][jl]
                             index[0]=k
                             index[1]=jl
@@ -50,6 +52,9 @@ def decoding(sources, depot, b, a, c ,v):
                             index[0]=kl
                             index[1]=j
                 k=index[0]
+#        print('maksimum v   ', max(v))
+#        print('kj  ', k, j)                
+#        print('paling murah  ', temp_c)
         g[k][j] = min(temp_a[k], temp_b[j])
         temp_a[k] = temp_a[k]-g[k][j]
         temp_d[k] = temp_d[k]+g[k][j]
@@ -65,11 +70,20 @@ def decoding(sources, depot, b, a, c ,v):
     return g, temp_d
 
 #C = np.array([[11,19,17,18],[16,14,18,15],[15,16,19,13]])
+#C1 = np.array([[1,6,5,2],[6,2,4,5],[3,4,2,1]])
 #j = ['d1','d2','d3','d4']
 #k=['p1','p2','p3']
 #depot = [300, 350, 300, 350]
-#sources = [550,400,450]
+#depot1=[50,150,100,50]
+#sources = [550,300,450]
+#source1=[100,100,150]
+#
+#c1=[100,100,150]
+#c2=[50,150,100,50]
+#c3=np.array([[1,6,5,2],[6,2,4,5],[3,4,2,1]])
 #
 #v=[3,5,1,7,4,2,6]
-
-#print(decoding(k, j, depot, sources, C,v)[1])
+#v1=[3,7,4,2,6,1,5]
+#v2= [1, 5, 3, 7, 4, 2, 6]
+#
+#print(decoding(k, j, c2, c1, c3,v2)[0])

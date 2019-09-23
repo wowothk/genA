@@ -37,35 +37,43 @@ class priority_based_enc:
             for j in range(len(self.depot)):
                 temp_g[k][j] = self.g[k][j]
                 temp_c[k][j] = self.c[k][j]
-        
-        DCK = [] # set of closed depot
-        P = self.P # the number of depot that can open
-        
-        for k in range(len(self.depot)-P):
-            if DCK ==[]:
-                i = random.randint(0,len(temp_depot)-1) # index of temp_depot
-            else:
-                x = 0
-                while i == temp_depot.index(DCK[x]):
-                        i = random.randint(0, len(temp_depot)-1)
-                        if x == len(temp_depot):
-                            x = 0
-                   
-            DCK.append(temp_depot[i])
-            temp_b[i] = 0
-            for j in range(len(self.sources)):
-                temp_g[j][i] = 0
-        if len(DCK)!=0:
-            temp_depot.append("dummy")
-            dummy_column =np.array([[0]*len(self.sources)]).T
-            for i in range(len(DCK)):
-                col = np.array([self.g[:,self.depot.index(DCK[i])]])
-                dummy_column = dummy_column + col.T
-            temp_b.append(int(sum(dummy_column)))
-            temp_g = np.append(temp_g, dummy_column, 1)
-            dummy_cost =np.array([[0]*len(self.sources)]).T
-            temp_c = np.append(temp_c, dummy_cost, 1)
-        
+#        print('temp_sources  ', temp_sources)
+#        print('temp_depot   ', temp_depot )
+#        print('permintaan  ',temp_b)
+#        print('persediaan  ', temp_a)
+#        print('yang dikirim  ', temp_g)
+#        print('biaya   ', temp_c)
+#        DCK = [] # set of closed depot
+#        P = self.P # the number of depot that can open
+#        
+#        if P!=0:
+#            for k in range(len(self.depot)-P):
+#                if DCK ==[]:
+#                    i = random.randint(0,len(temp_depot)-1) # index of temp_depot
+#                else:
+#                    x = 0
+#                    while i == temp_depot.index(DCK[x]):
+#                            i = random.randint(0, len(temp_depot)-1)
+#                            if x == len(temp_depot):
+#                                x = 0
+#                       
+#                DCK.append(temp_depot[i])
+#                temp_b[i] = 0
+#                for j in range(len(self.sources)):
+#                    temp_g[j][i] = 0
+#        print("##### setup g")
+#        print(temp_g)
+#        if len(DCK)!=0:
+#            temp_depot.append("dummy")
+#            dummy_column =np.array([[0]*len(self.sources)]).T
+#            for i in range(len(DCK)):
+#                col = np.array([self.g[:,self.depot.index(DCK[i])]])
+#                dummy_column = dummy_column + col.T
+#            temp_b.append(int(sum(dummy_column)))
+#            temp_g = np.append(temp_g, dummy_column, 1)
+#            dummy_cost =np.array([[0]*len(self.sources)]).T
+#            temp_c = np.append(temp_c, dummy_cost, 1)
+#        
         v = [None]*(len(temp_depot)+len(temp_sources))
         p = len(temp_depot)+len(temp_sources)
         i=0
@@ -78,12 +86,17 @@ class priority_based_enc:
 #        print(temp_c)
         index=[0,0]
 #        checking_none=[]  or checking_none != v
-        while temp_b[index[1]] != 0 or temp_a[index[0]] != 0:
+#        while temp_b[index[1]] != 0 or temp_a[index[0]] != 0:
+        while sum(temp_b) != 0 or sum(temp_a) != 0: #ini yang kuganti barusan 
+            #jadi ketika jumlahannya nol itu memastikan bahwa setiap depot atau source sama dengan nol
+            # kemudian untuk depot yang closed dia akan digenerate dengan iterasi for setelah while
+            # kemudian juga diperhatikan bahwasanya sebelum memasuki proses ini harus ada pembentukan dummy
             i=i+1
             print(i)
 #            print(index)
             temp_cost = 0 
             for k in range(len(temp_sources)):
+#                temp_cost = 0
                 for j in range(len(temp_depot)):
                     if temp_g[k][j] != 0 and (temp_b[j] == temp_g[k][j] or temp_a[k]==temp_g[k][j]):
                         if temp_cost == 0:
@@ -94,7 +107,7 @@ class priority_based_enc:
                             temp_cost = temp_c[k][j]
                             index[0] = k
                             index[1] = j
-#            print("index", index)                            
+#            print("temp_cost", temp_cost)                            
             temp_b[index[1]] = temp_b[index[1]]-temp_g[index[0]][index[1]]
             temp_a[index[0]] = temp_a[index[0]]-temp_g[index[0]][index[1]] 
 #            print("tem_b", temp_b)
@@ -118,6 +131,8 @@ class priority_based_enc:
 #            print(v)
 #            if i == len(temp_depot)+len(temp_sources):
 #                break
+            if i == 50:
+                break
         for l in range(p):
             t = random.randint(0, len(temp_depot)+len(temp_sources)-1)
             while v[t] != None:
@@ -177,6 +192,14 @@ D = [200,150,200]
 W = [150, 100, 200, 100]
 d = [50, 100, 50, 100]
 
+
+
+c1=[100,100,150]
+c2=[50,150,100,50]
+c3=np.array([[1,6,5,2],[6,2,4,5],[3,4,2,1]])
+c4=np.array([[50,0,50,0],[0,100,0,0],[0,50,50,50]])
+b1= np.array([[0,0,0],[150,0,0],[0,150,0]])
+
 b = np.array([[0,150,100],[200,0,0],[0,0,50]]) 
 f = np.array([[0,0,0,0],[0,0,150,0],[150,0,0,0]])
 q = np.array([[50,100,0,0],[0,0,0,0],[0,0,50,100],[0,0,0,0]])
@@ -185,7 +208,7 @@ t = np.array([[4,3,1],[3,5,2],[1,6,4]])
 a = np.array([[5,2,4,3],[4,6,3,5],[3,5,1,6]])
 c = np.array([[3,5,2,4],[6,2,5,1],[4,3,6,5],[2,4,3,2]])
 
-stage1 = priority_based_enc(supplier, plant, sups, D, t, b, 2)
+stage1 = priority_based_enc(plant, dc, c1, c2, c3, c4, 0)
 v1 = stage1.encoding()
 print(v1)
 #stage2 = priority_based_enc(plant, dc, D, W, a, f, 3)
