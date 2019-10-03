@@ -39,6 +39,7 @@ class stage_2:
 #        print("Iki w yalllll", temp_w)
 #        print(self.J)
 #        print("Iki w yalllll hehe", self.w)
+        w_aksen=stg_3[0]
         q=stg_3[1]
         z=stg_3[3]
 #        Cd = stg_3[2]
@@ -173,25 +174,25 @@ class stage_2:
         ## masalah terakhir adalah total kapasitas kurang dari total permintaan
         # dan plant yang dapat berfungsi ketika kapasitasnya memiliki kapasitas yang sama
 
-#supplier = ["s1","s2","s3"]
-#plant = ["p1","p2","p3"]
-#dc = ["dc1","dc2","dc3","dc4"]
-#customer =["cust1","cust2", "cust3","cust4"]
-#
-#sups =[250,200,250]
-#D = [200,150,200] 
-#W = [150, 100, 200, 100]
-#d = [50, 100, 50, 100]
-#
-#c = np.array([[3,5,2,4],[6,2,5,1],[4,3,6,5],[2,4,3,2]])
-#a = np.array([[5,2,4,3],[4,6,3,5],[3,5,1,6]])
-#
-#v2 =[4,5,6,8,3,2,7,1]
-#v3 = [0,0,2,2,2]
-##stg_3 = stage_3(dc, customer, W, d, v3).decode()
-##print(stg_3)
-#stg_2 = stage_2(plant,dc,customer, D, a,v2, d, W,v3).decode()
-#print(stg_2)
+supplier = ["s1","s2","s3"]
+plant = ["p1","p2","p3"]
+dc = ["dc1","dc2","dc3","dc4"]
+customer =["cust1","cust2", "cust3","cust4"]
+
+sups =[250,200,250]
+D = [200,150,200] 
+W = [150, 100, 200, 100]
+d = [50, 100, 50, 100]
+
+c = np.array([[3,5,2,4],[6,2,5,1],[4,3,6,5],[2,4,3,2]])
+a = np.array([[5,2,4,3],[4,6,3,5],[3,5,1,6]])
+
+v2 =[4,5,6,8,3,2,7,1]
+v3 = [0,0,2,2,2]
+#stg_3 = stage_3(dc, customer, W, d, v3).decode()
+#print(stg_3)
+stg_2 = stage_2(plant,dc,customer, D, a,v2, d, W,v3).decode()
+print(stg_2)
             
             
                   

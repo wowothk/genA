@@ -267,7 +267,7 @@ class create:
             temp_dc.append("dummy")
             temp_J.append(sum(temp))
             f_aksen = np.append(f_aksen, np.array([temp]).T,1)
-        print('nilai z  ', z)
+#        print('nilai z  ', z)
 #        print('dc setelah ada dummy = ', temp_dc)
 #        print('permintaan dc setelah ada dummy = ', temp_J)
 #        print("nilai f setelah ada dummy = ", f_aksen) 
@@ -284,7 +284,8 @@ class create:
         stg_2 = create(self.supplier, self.plant, self.dc, self.customer,self.S,self.K,self.J,self.I, self.maks_plant, self.maks_dc).plant_to_dc()
         f = stg_2[0]
         q = stg_2[1]
-        p = stg_2[2]        
+        p = stg_2[2] 
+        f_aksen = stg_2[3]
         b= create_b(self.supplier, self.plant, self.S, self.K, p, f)
         b_aksen=np.array([[None]*len(self.K)]*len(self.S))
         for s in range(len(self.S)):
@@ -302,26 +303,28 @@ class create:
 #        print('plant setelah ada dummy = ', temp_plant)
 #        print('permintaan plant setelah ada dummy = ', temp_K)
 #        print("nilai b setelah ada dummy = ", b_aksen) 
-        return b, f, q, b_aksen
+        return b, f, q, b_aksen, temp_plant, temp_K, f_aksen
     
     
-supplier = ["s1","s2","s3"]
-plant = ["p1","p2","p3"]
-dc = ["dc1","dc2","dc3","dc4"]
-customer =["cust1","cust2", "cust3","cust4"]
-
-sups =[250,200,250]
-D = [200,150,200] 
-W = [150, 100, 200, 100]
-d = [50, 100, 50, 100]
-
-# supplier, plant, dc, customer,S,K,J,I, maks_plant, maks_dc
-
-stage_satu = create(supplier, plant, dc, customer, sups, D, W, d, 2, 2).supplier_to_plant()
-#print(stage_satu.supplier_to_plant())
-#print('print b', stage_satu[0])
-#print('print f', stage_satu[1])
-#print('print q', stage_satu[2]) 
-#print("5555")
-print(stage_satu) # karena tidak bisa sesuai dengan apa yang terjadi sesungguhnya
+#supplier = ["s1","s2","s3"]
+#plant = ["p1","p2","p3"]
+#dc = ["dc1","dc2","dc3","dc4"]
+#customer =["cust1","cust2", "cust3","cust4"]
+#
+#sups =[250,200,250]
+#D = [200,150,200] 
+#W = [150, 100, 200, 100]
+#d = [50, 100, 50, 100]
+#
+## supplier, plant, dc, customer,S,K,J,I, maks_plant, maks_dc
+#
+#stage_satu = create(supplier, plant, dc, customer, sups, D, W, d, 2, 2).supplier_to_plant()
+##print(stage_satu.supplier_to_plant())
+##print('print b', stage_satu[0])
+##print('print f', stage_satu[1])
+##print('print q', stage_satu[2]) 
+##print("5555")
+#print(stage_satu) # karena tidak bisa sesuai dengan apa yang terjadi sesungguhnya
+#print(type(stage_satu))
+#print(list(stage_satu))
 

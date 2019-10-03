@@ -2,14 +2,14 @@ import random
 import numpy as np
 
 class priority_based_enc:
-    def __init__(self, sources, depot, a, b, c, g,P):
+    def __init__(self, sources, depot, a, b, c, g):
         self.sources = sources
         self.depot = depot
         self.a = a
         self.b = b
         self.c = c
         self.g = g
-        self.P = P
+#        self.P = P
     """
     dengan 
     sources: himpunan sumber; depot: himpunan tujuan;
@@ -87,7 +87,9 @@ class priority_based_enc:
         index=[0,0]
 #        checking_none=[]  or checking_none != v
 #        while temp_b[index[1]] != 0 or temp_a[index[0]] != 0:
-        while sum(temp_b) != 0 or sum(temp_a) != 0: #ini yang kuganti barusan 
+        while sum(temp_b) != 0 or sum(temp_a)!=0: 
+        #while sum(temp_b) != 0 or sum(temp_a)!=0: pakai ini untuk cara yang satunya atau dkl yg mendefinisikan dummy secara detail
+            #ini yang kuganti barusan 
             #jadi ketika jumlahannya nol itu memastikan bahwa setiap depot atau source sama dengan nol
             # kemudian untuk depot yang closed dia akan digenerate dengan iterasi for setelah while
             # kemudian juga diperhatikan bahwasanya sebelum memasuki proses ini harus ada pembentukan dummy
@@ -124,6 +126,7 @@ class priority_based_enc:
                 v[index[0]] = p 
                 p = p-1
                 temp_g[index[0]][index[1]] = 0
+            
 #            print(temp_b[index[1]])
 #            print(temp_a[index[0]])
 #            checking_none = list(filter(None, v))
@@ -133,11 +136,24 @@ class priority_based_enc:
 #                break
             if i == 50:
                 break
+        print(v)
         for l in range(p):
             t = random.randint(0, len(temp_depot)+len(temp_sources)-1)
             while v[t] != None:
                 t = random.randint(0, len(temp_depot)+len(temp_sources)-1)
             v[t] = l+1
+        
+        ##### tambahan #####
+        if sum(temp_b) == 0 and sum(temp_a) !=0:
+            
+#            temp_a = 0
+            v.append(0)
+            print('temp_b  ', temp_b)
+            print('v  ', v)
+            for x in range(len(v)):
+                v[x]=v[x]+1
+            
+            ####################
         return v
 
 class integer_encoding:
@@ -163,54 +179,56 @@ class integer_encoding:
                     v[i] = j+1
         
         return v
-
-"""
-dc: gudang
-plant : pabrik
-
-sups: kapasitas suplier
-D : kapasitas plant
-W : kapasitas cc
-d : banyaknya permintaan customer
-
-b : banyaknya barang yang dikirim dari suplier ke plant
-f : banyaknya barang yang dikirim dari plant ke dc
-q : banyaknya barang yang dikirim dari dc ke customer
-
-t : biaya pengiriman barang dari suplier ke pabrik
-a : biaya pengiriman barang dari pabrik ke dc
-c : biaya pengiriman barang dari dc ke customer
-
-"""
-supplier = ["s1","s2","s3"]
-plant = ["p1","p2","p3"]
-dc = ["dc1","dc2","dc3","dc4"]
-customer =["cust1","cust2", "cust3","cust4"]
-
-sups =[250,200,250]
-D = [200,150,200] 
-W = [150, 100, 200, 100]
-d = [50, 100, 50, 100]
-
-
-
-c1=[100,100,150]
-c2=[50,150,100,50]
-c3=np.array([[1,6,5,2],[6,2,4,5],[3,4,2,1]])
-c4=np.array([[50,0,50,0],[0,100,0,0],[0,50,50,50]])
-b1= np.array([[0,0,0],[150,0,0],[0,150,0]])
-
-b = np.array([[0,150,100],[200,0,0],[0,0,50]]) 
-f = np.array([[0,0,0,0],[0,0,150,0],[150,0,0,0]])
-q = np.array([[50,100,0,0],[0,0,0,0],[0,0,50,100],[0,0,0,0]])
-
-t = np.array([[4,3,1],[3,5,2],[1,6,4]])
-a = np.array([[5,2,4,3],[4,6,3,5],[3,5,1,6]])
-c = np.array([[3,5,2,4],[6,2,5,1],[4,3,6,5],[2,4,3,2]])
-
-stage1 = priority_based_enc(plant, dc, c1, c2, c3, c4, 0)
-v1 = stage1.encoding()
-print(v1)
+#
+#"""
+#dc: gudang
+#plant : pabrik
+#
+#sups: kapasitas suplier
+#D : kapasitas plant
+#W : kapasitas cc
+#d : banyaknya permintaan customer
+#
+#b : banyaknya barang yang dikirim dari suplier ke plant
+#f : banyaknya barang yang dikirim dari plant ke dc
+#q : banyaknya barang yang dikirim dari dc ke customer
+#
+#t : biaya pengiriman barang dari suplier ke pabrik
+#a : biaya pengiriman barang dari pabrik ke dc
+#c : biaya pengiriman barang dari dc ke customer
+#
+#"""
+#supplier = ["s1","s2","s3"]
+#plant = ["p1","p2","p3"]
+#dc = ["dc1","dc2","dc3","dc4"]
+#customer =["cust1","cust2", "cust3","cust4"]
+#
+#sups =[250,200,250]
+#D = [200,150,200] 
+#W = [150, 100, 200, 100]
+#d = [50, 100, 50, 100]
+#
+#permintaan_plant=[0,150,150,400]
+#persediaan_sups=[250, 0, 50]
+#plant_dummy = ["p1","p2","p3", "dummy"]
+#
+#c1=[100,100,150]
+#c2=[50,150,100,50]
+#c3=np.array([[1,6,5,2],[6,2,4,5],[3,4,2,1]])
+#c4=np.array([[50,0,50,0],[0,100,0,0],[0,50,50,50]])
+#b1= np.array([[0,0,0],[150,0,0],[0,150,0]])
+#
+#b = np.array([[0,150,100,0],[0,0,0,200],[0,0,50,200]]) 
+#f = np.array([[0,0,0,0],[0,0,150,0],[150,0,0,0]])
+#q = np.array([[50,100,0,0],[0,0,0,0],[0,0,50,100],[0,0,0,0]])
+#
+#t = np.array([[4,3,1,0],[3,5,2,0],[1,6,4,0]])
+#a = np.array([[5,2,4,3],[4,6,3,5],[3,5,1,6]])
+#c = np.array([[3,5,2,4],[6,2,5,1],[4,3,6,5],[2,4,3,2]])
+##
+#stage1 = priority_based_enc(supplier, plant_dummy, sups, permintaan_plant, t, b)
+#v1 = stage1.encoding()
+#print(v1)
 #stage2 = priority_based_enc(plant, dc, D, W, a, f, 3)
 #v2 = stage2.encoding()
 #stage3 = integer_encoding(dc, customer, W, d, c, q)

@@ -19,7 +19,7 @@ def decoding(sources, depot, b, a, c ,v):
     j=0
     index=[0,0]
     i=0 
-    while sum(v[len(sources):]) !=0: #dari prosedur yang diberikan didapat bahwasanya syaratnya bukan perihal semua v sama dengna 0
+    while sum(v[len(sources):]) !=0:  #dari prosedur yang diberikan didapat bahwasanya syaratnya bukan perihal semua v sama dengna 0
 #        i=i+1
 #        print('iterasi  ',i)
         temp_c =0
@@ -69,6 +69,64 @@ def decoding(sources, depot, b, a, c ,v):
 #            break
     return g, temp_d
 
+
+#supplier = ["s1","s2","s3"]
+#plant = ["p1","p2","p3"]
+#dc = ["dc1","dc2","dc3","dc4"]
+#customer =["cust1","cust2", "cust3","cust4"]
+#
+#sups =[250,200,250]
+#D = [200,150,200] 
+#W = [150, 100, 200, 100]
+#d = [50, 100, 50, 100]
+#
+#permintaan_plant=[0,150,150,400]
+#persediaan_sups=[250, 0, 50]
+#plant_dummy = ["p1","p2","p3", "dummy"]
+#
+#c1=[100,100,150]
+#c2=[50,150,100,50]
+#c3=np.array([[1,6,5,2],[6,2,4,5],[3,4,2,1]])
+#c4=np.array([[50,0,50,0],[0,100,0,0],[0,50,50,50]])
+#b1= np.array([[0,0,0],[150,0,0],[0,150,0]])
+#
+#b = np.array([[0,150,100],[0,0,0],[0,0,50]]) 
+#f = np.array([[0,0,0,0],[0,0,150,0],[150,0,0,0]])
+#q = np.array([[50,100,0,0],[0,0,0,0],[0,0,50,100],[0,0,0,0]])
+#
+#t = np.array([[4,3,1,0],[3,5,2,0],[1,6,4,0]])
+#a = np.array([[5,2,4,3],[4,6,3,5],[3,5,1,6]])
+#c = np.array([[3,5,2,4],[6,2,5,1],[4,3,6,5],[2,4,3,2]])
+##
+##stage1 = priority_based_enc(supplier, plant, persediaan_sups, permintaan_plant, t, b)
+##v1 = stage1.encoding()
+##print(v1)
+#v1=[6,4,3,2,7,5,1]
+#v2=[6,4,2,3,7,5,1]
+#v3=[3,7,4,2,6,5,1]
+#v1.pop()
+#v2.pop()
+#v3.pop()
+#print(v1)
+#
+#print(decoding(supplier, plant_dummy, permintaan_plant, sups, t, [4, 7, 2, 1, 5, 3, 6]))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #C = np.array([[11,19,17,18],[16,14,18,15],[15,16,19,13]])
 #C1 = np.array([[1,6,5,2],[6,2,4,5],[3,4,2,1]])
 #j = ['d1','d2','d3','d4']
@@ -85,5 +143,5 @@ def decoding(sources, depot, b, a, c ,v):
 #v=[3,5,1,7,4,2,6]
 #v1=[3,7,4,2,6,1,5]
 #v2= [1, 5, 3, 7, 4, 2, 6]
-#
+##
 #print(decoding(k, j, c2, c1, c3,v2)[0])

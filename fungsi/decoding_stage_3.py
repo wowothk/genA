@@ -116,18 +116,18 @@ class stage_3:
             stage_3(self.J, self.I, self.w, self.d, self.v).decode()
             
     
-#supplier = ["s1","s2","s3"]
-#plant = ["p1","p2","p3"]
-#dc = ["dc1","dc2","dc3","dc4"]
-#customer =["cust1","cust2", "cust3","cust4"]
-#
-#sups =[250,200,250]
-#D = [200,150,200] 
-#W = [150, 100, 200, 100]
-#d = [50, 100, 50, 100]
-#
-#c = np.array([[3,5,2,4,0],[6,2,5,1,0],[4,3,6,5,0],[2,4,3,2,0]])
-#
-#v3 = [0,0,2,2,2]
-#stg_3 = stage_3(dc, customer, W, d, v3).decode()
-#print(stg_3)
+supplier = ["s1","s2","s3"]
+plant = ["p1","p2","p3"]
+dc = ["dc1","dc2","dc3","dc4"]
+customer =["cust1","cust2", "cust3","cust4"]
+
+sups =[250,200,250]
+D = [200,150,200] 
+W = [150, 100, 200, 100]
+d = [50, 100, 50, 100]
+
+c = np.array([[3,5,2,4,0],[6,2,5,1,0],[4,3,6,5,0],[2,4,3,2,0]])
+
+v3 = [0,0,2,2,2]
+stg_3 = stage_3(dc, customer, W, d, v3).decode()
+print(stg_3)

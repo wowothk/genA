@@ -27,7 +27,7 @@ def decode_pb_2(K, W_aksen, a, v):
     ###
     for k in range(len(K)):
         for j in range(len(J)):
-            tot_dem = tot_dem + q[k][j]
+            tot_dem = tot_dem + q[k][j]#sepertinya salah yg benar adalah W_aksen
     
     p=[0]*len(K)
     p_d= [0]*len(K)
