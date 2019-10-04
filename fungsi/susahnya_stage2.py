@@ -167,6 +167,7 @@ class create:
         f = np.array([[0]*len(self.J)]*len(self.K))
         stg_3 = create(self.supplier, self.plant, self.dc, self.customer,self.S,self.K,self.J,self.I, self.maks_plant, self.maks_dc).dc_to_customer()
         q = stg_3[0]
+        q_aksen = stg_3[5]
         z = stg_3[1]
         tot_dem = 0
         ka = [0]*len(self.K)
@@ -271,7 +272,7 @@ class create:
 #        print('dc setelah ada dummy = ', temp_dc)
 #        print('permintaan dc setelah ada dummy = ', temp_J)
 #        print("nilai f setelah ada dummy = ", f_aksen) 
-        return f, q, p, f_aksen
+        return f, q, p, f_aksen, q_aksen
     
     
     def supplier_to_plant(self):
@@ -286,6 +287,7 @@ class create:
         q = stg_2[1]
         p = stg_2[2] 
         f_aksen = stg_2[3]
+        q_aksen = stg_2[4]
         b= create_b(self.supplier, self.plant, self.S, self.K, p, f)
         b_aksen=np.array([[None]*len(self.K)]*len(self.S))
         for s in range(len(self.S)):
@@ -303,7 +305,7 @@ class create:
 #        print('plant setelah ada dummy = ', temp_plant)
 #        print('permintaan plant setelah ada dummy = ', temp_K)
 #        print("nilai b setelah ada dummy = ", b_aksen) 
-        return b, f, q, b_aksen, temp_plant, temp_K, f_aksen
+        return b, f, q,  temp_plant, temp_K, b_aksen, f_aksen, q_aksen
     
     
 #supplier = ["s1","s2","s3"]
