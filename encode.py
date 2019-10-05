@@ -94,7 +94,7 @@ class priority_based_enc:
             # kemudian untuk depot yang closed dia akan digenerate dengan iterasi for setelah while
             # kemudian juga diperhatikan bahwasanya sebelum memasuki proses ini harus ada pembentukan dummy
             i=i+1
-            print(i)
+#            print(i)
 #            print(index)
             temp_cost = 0 
             for k in range(len(temp_sources)):
@@ -136,7 +136,7 @@ class priority_based_enc:
 #                break
             if i == 50:
                 break
-        print(v)
+#        print(v)
         for l in range(p):
             t = random.randint(0, len(temp_depot)+len(temp_sources)-1)
             while v[t] != None:
@@ -148,8 +148,8 @@ class priority_based_enc:
             
 #            temp_a = 0
             v.append(0)
-            print('temp_b  ', temp_b)
-            print('v  ', v)
+#            print('temp_b  ', temp_b)
+#            print('v  ', v)
             for x in range(len(v)):
                 v[x]=v[x]+1
             
