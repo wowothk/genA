@@ -90,7 +90,7 @@ for i in range(len(population)):
 #            print(population_aksen)
             v3 = integer_encoding(dc, temp_customer, capacity, d,temp_cost,population_aksen).encode()
     
-    encoding_population[i] = v1+v2+v3
+    encoding_population[i] = [v1,v2,v3]
 ###########
 
 for i in range(len(population)):
