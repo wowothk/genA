@@ -8,7 +8,7 @@ Created on Tue Sep 17 15:32:21 2019
 
 import numpy as np
 import random
-from evaluation_function import evaluation
+from evaluation_funtion import evaluation
 pop1 = [3,7,4,2,8,5,1,4,5,6,8,3,2,7,1,1,3,3,3]
 pop2 = [1,4,5,6,7,3,2,8,1,3,5,7,6,4,2,1,3,2,2]
 
@@ -77,7 +77,9 @@ def crossover(chromosom1, chromosom2, sups, W, D, d):
             temp = parent1[i]
             parent1[i] = parent2[i]
             parent2[i] = temp
-    return parent1, parent2
+    children1=parent1.copy()
+    children2=parent2.copy()
+    return children1, children2
 
 # dengan cara ini dapat dilakukan swap mutasi, tapi dengan cara ini akan
 # terdapat mutasi secara terus menurus yang mana dia akan bertukar/swap pada setiap iterasi        
@@ -163,7 +165,7 @@ def mulambdaSelection(mu,plusLambda, sups, D, W, d, t, a, c,g,v,r1, r2, weight1,
         temporary.remove(max(temporary))
     
     return elite
-def roulettewheelSelection(population, sups, D, W, d, t, a, c,g,v,r1, r2, weight1, weight2, weight3):
+def roulettewheelSelection(population, sups, D, W, d, t, a, c, g ,v,r1, r2, weight1, weight2, weight3):
     evalPopulation = [0]*len(population)
     for x in range(len(population)):
         func1 = evaluation(population[x][0],population[x][1],population[x][2], sups, D, W, d, t,a,c,g,v,population[x][3], population[x][4], population[x][5],population[x][6], r1, r2).func1()
@@ -196,7 +198,7 @@ def roulettewheelSelection(population, sups, D, W, d, t, a, c,g,v,r1, r2, weight
             
     return newPopulation
             
-print(integerMutation([1,3,4,5,2], 5))
+#print(integerMutation([1,3,4,5,2], 5))
 
 #spr = spare(pop1, sups, W, D, d)
 #v1=spr[0]

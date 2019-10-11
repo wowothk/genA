@@ -27,7 +27,7 @@ c: the cost of shipment from dc to customer
 import numpy as np, numpy.random
 import math
 class evaluation:
-    def __init__(self, b,f,q, sups, D, W, d, t, a, c,g,v,p,z, Op,Od, r1, r2):
+    def __init__(self, b,f,q, sups, D, W, d, t, a, c,g,v,p,z, r1, r2):
         self.b = b
         self.f = f
         self.q = q
@@ -42,8 +42,8 @@ class evaluation:
         self.v = v
         self.p = p
         self.z = z
-        self.Op = Op
-        self.Od = Od
+#        self.Op = Op
+#        self.Od = Od
         self.r1 = r1
         self.r2 = r2
     
@@ -83,7 +83,7 @@ class evaluation:
         for j in range(len(self.W)):
             sumOfq[j] = sum(self.q[j])
         
-        return sumOfq/sum(self.d)
+        return sum(sumOfq)/sum(self.d)
     
     def func3(self):
         openPlant = list(np.multiply(self.D, self.p))
@@ -92,11 +92,11 @@ class evaluation:
         equation2 = [0]*len(openDc)
         for k in range(len(self.D)):
             if self.p[k] != 0:
-                equation1[k]=(sum(self.f[k])/self.D[k]-(np.sum(self.f)/sum(openPlant)))^2
+                equation1[k]=(sum(self.f[k])/self.D[k]-(np.sum(self.f)/sum(openPlant)))**2
             
         for j in range(len(self.W)):
             if self.z[j] != 0:
-                equation2[j]=(sum(self.q[j])/self.W[j]-(np.sum(self.q)/sum(openDc)))^2
+                equation2[j]=(sum(self.q[j])/self.W[j]-(np.sum(self.q)/sum(openDc)))**2
         
         return self.r1*math.sqrt(sum(equation1)/sum(self.p))+self.r2*math.sqrt(sum(equation2)/sum(self.z))
     

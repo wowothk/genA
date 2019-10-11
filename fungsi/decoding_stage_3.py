@@ -22,6 +22,7 @@ class stage_3:
     def decode(self):
         z = [0]*len(self.J)
         y = np.array([[0]*len(self.J)]*len(self.I))
+        customerDemand = self.d.copy()
         Od = []
         Cd = [None]*len(self.J)
         for j in range(len(self.J)):
@@ -30,29 +31,35 @@ class stage_3:
         w_aksen = [0]*len(self.J) # total banyaknya demand untuk product J
 #        print("Cd   ", Cd)
 #        print("J   ", self.J)
+#        print(len(z))
         temp = []
+        chromosom=self.v.copy()
+        capacityW=self.w.copy()
+        for k in range(len(self.v)):
+            chromosom[k] = chromosom[k]-1
+
         for i in range(len(self.I)):
-#            print(i)
+#            print(self.v[i])
 #            print("Od   ",Od)
 #            print("Cd    ", Cd)
-            z[self.v[i]] = 1
-            y[self.v[i]][i] = 1
+            z[chromosom[i]] = 1
+            y[chromosom[i]][i] = 1
 #            print("Self.J[v[i]]  ", self.J[self.v[i]])        
-            Od.append(self.J[self.v[i]])
+            Od.append(self.J[chromosom[i]])
 #            Cd.remove(self.J[self.v[i]])
         Cd = list(set(self.J)-set(Od))
         tot_cap =0
         for j in range(len(self.J)):
-            tot_cap = tot_cap+ self.w[j]*z[j]
+            tot_cap = tot_cap+ capacityW[j]*z[j]
         tot_dem = 0
         for i in range(len(self.I)):
             tot_dem = tot_dem + self.d[i]
-        if len(Od) <= len(self.w) and tot_cap >= tot_dem:
+        if len(Od) <= len(capacityW) and tot_cap >= tot_dem:
             for i in range(len(self.I)):
-                q[self.v[i]][i] = self.d[i]
-                self.w[self.v[i]] = self.w[self.v[i]] - q[self.v[i]][i]
-                w_aksen[self.v[i]] = w_aksen[self.v[i]] + q[self.v[i]][i]
-                self.d[i] = 0
+                q[chromosom[i]][i] = self.d[i]
+                capacityW[chromosom[i]] = capacityW[chromosom[i]] - q[chromosom[i]][i]
+                w_aksen[chromosom[i]] = w_aksen[chromosom[i]] + q[chromosom[i]][i]
+                customerDemand[i] = 0
             temp = []
             for j in range(len(self.J)):
                 if self.w[j] < 0:
@@ -61,19 +68,19 @@ class stage_3:
                             temp.append(i)
                     k = random.randint(0, len(temp)-1)
                     y[j][temp[k]] = 0 
-                    self.w[j] = self.w[j] + q[j][temp[k]]
+                    capacityW[j] = capacityW[j] + q[j][temp[k]]
                     w_aksen[j] = w_aksen[j] - q[j][temp[k]]
                     for je in range(len(self.J)):
                         if je != j :
-                            self.w[je] = self.w[je] - q[je][temp[k]]
-                            if self.w[j] >= 0:
+                            capacityW[je] = capacityW[je] - q[je][temp[k]]
+                            if capacityW[j] >= 0:
                                 y[j][temp[k]] = 1
     #                            self.w[j] = self.w[j] - q[j][k]
                                 w_aksen[j] = w_aksen[j] + q[j][temp[k]]
-                                self.v[temp[k]] = je
+                                capacityW[temp[k]] = je
                                 q[je][temp[k]] = self.d[temp[k]]
                             else:
-                                self.w[je] = self.w[je] + q[je][temp[k]]
+                                capacityW[je] = capacityW[je] + q[je][temp[k]]
 #            print("Nilai W,  ", self.w)
 #            print("Nilai z   ", z)
 #            print("Nilai y   ", y)
@@ -87,9 +94,9 @@ class stage_3:
 #            print("index  ", index_od)
             dok =[]
             for x in range(len(index_od[0])):
-                dok.append(self.w[index_od[0][x]])
+                dok.append(capacityW[index_od[0][x]])
 #            print('dok    ', dok)
-            dck = list(set(self.w) -set(dok))
+            dck = list(set(capacityW) -set(dok))
 #            print('dck    ', dck)
 #            dok = Od
 #            print('dok     ', dok)
@@ -110,10 +117,10 @@ class stage_3:
                             r = random.randint(0, len(Od)-1)
                             index = np.where(temp_od[r] == temp_j)[0]
                             rand = random.randint(0, len(index)-1)
-                            self.v[i] = self.w[index[rand]]
+                            chromosom[i] = capacityW[index[rand]]
                             
 #            print(type(self.v[0]))
-            stage_3(self.J, self.I, self.w, self.d, self.v).decode()
+            stage_3(self.J, self.I, capacityW, self.d, chromosom).decode()
             
     
 supplier = ["s1","s2","s3"]
@@ -126,8 +133,10 @@ D = [200,150,200]
 W = [150, 100, 200, 100]
 d = [50, 100, 50, 100]
 
-c = np.array([[3,5,2,4,0],[6,2,5,1,0],[4,3,6,5,0],[2,4,3,2,0]])
+c = np.array([[3,5,2,4],[6,2,5,1],[4,3,6,5],[2,4,3,2]])
 
-v3 = [0,0,2,2,2]
-stg_3 = stage_3(dc, customer, W, d, v3).decode()
+v3 = [1,1,3,3,3]
+print(d)
+stg_3 = stage_3(dc, customer, W, d, [3, 3, 1, 1, 3]).decode()
 print(stg_3)
+print(d)

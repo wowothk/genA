@@ -1,5 +1,6 @@
 import numpy as np
-def decoding(C,sources, depot,v):
+def decoding(C,sources, depot,chromosom):
+    v=chromosom.copy()
     temp_sources = [None]*len(sources)
     temp_depot= [None]*len(depot)
     for k in range(len(sources)):
