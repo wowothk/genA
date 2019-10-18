@@ -10,6 +10,7 @@ decoding stage 2
 """
 import numpy as np
 import random
+import copy
 from decoding_stage_3 import stage_3
 from repair import repair_alg
 from prosedur1 import decoding
@@ -34,10 +35,11 @@ class stage_2:
             temp_w[i] = self.w[i]
 #        print(self.J, self.I, temp_w, self.d, self.v3)
         stg_3= stage_3(self.J, self.I, temp_w, self.d, self.v3).decode()
+#        print(stg_3)
 #        w_aksen=stg_3[0]
         q=stg_3[1]
         z=stg_3[3]
-        Cd = stg_3[2]
+#        Cd = stg_3[2]
         tot_dem = 0
         Pd = [0]*len(self.K)
         for j in range(len(self.J)):
@@ -54,6 +56,7 @@ class stage_2:
             D[k] = self.De[k]
         Np = len(Op)
         P = 2
+        
 #        print('Pd   :',Pd ) #Kemungkinan Pdk ini salah 
 #        print('q    :', q)
 #        print("tot_cap  :", tot_cap)
@@ -77,6 +80,7 @@ class stage_2:
             Np = Np + 1
             Pd[hp_k] = 0
         Cp = list(set(self.K)-set(Op))
+        
 #        print("Op   ",Op)
 #        print("tot_cap  :", tot_cap)
 #        print("Cp    ", Cp)
@@ -84,10 +88,11 @@ class stage_2:
         
         
         
-        chromosom2 = self.v2.copy()
+        chromosom2 = copy.deepcopy(self.v2)
         if len(Cp) != 0:
             for e in range(len(Cp)):
                 chromosom2[self.K.index(Cp[e])] = 0
+        
         while len(Op) > P or tot_cap < tot_dem: # disini kemungkinan ada kres antara Op (value atau stringnya)
 #            temp_k = np.array(self.K)
 #            temp_op = np.array(Op)
@@ -118,6 +123,7 @@ class stage_2:
                         p[np.where(temp_dok == temp_De)[0][x]] = 1        
                 else:
                     p[self.De.index(dok[k])] = 1
+        
         if len(self.v2) > len(self.K)+len(self.J):
             chromosom2.pop()
         temp_d=[0]*len(self.K)
@@ -126,6 +132,9 @@ class stage_2:
             temp_d[k] = D[k]*p[k]
         for j in range(len(self.w)):
             temp_we[j] = self.w[j]*z[j]
+#        print(temp_d)
+#        print(temp_we)
+#        print(chromosom2)
         temp_q=[0]*len(self.w)
         for j in range(len(self.w)):
             temp_q[j] = sum(q[j])
@@ -154,7 +163,7 @@ class stage_2:
 ##stg_3 = stage_3(dc, customer, W, d, v3).decode()
 ##print(stg_3)
 #print(W)
-#stg_2 = stage_2(plant,dc,customer, D, W, d,a,[4, 7, 2, 8, 3, 5, 1, 6], [3, 3, 1, 1, 3]).decode()
+#stg_2 = stage_2(plant,dc,customer, D, W, d,a,[2, 8, 1, 3, 7, 7, 5, 4], [3, 3, 3, 4]).decode()
 #print(stg_2)
 
             

@@ -1,72 +1,73 @@
 ## decoding prosedur 1 ###
-
+import copy
 import numpy as np
 def decoding(sources, depot, b, a, c ,v):
-
-    temp_a = [None]*len(a)
+    temp_a = copy.deepcopy(a)
     temp_d = [0]*len(a)
-    temp_b= [None]*len(b)
-    for k in range(len(sources)):
-        temp_a[k] = a[k]
-#    print("===============prosedur 1============")
-#    print(len(depot))
-#    print(len(b))
-    for j in range(len(depot)):
-        temp_b[j]= b[j]
-
+    temp_b= copy.deepcopy(b)
     g = np.array([[0]*len(depot)]*len(sources))
     k=0
     j=0
     index=[0,0]
-    i=0 
+    for i in range(len(temp_a)):
+        if a[i] == 0:
+            v[i] = 0
+    for i in range(len(temp_b)):
+        if b[i] == 0:
+            v[len(sources)+i]=0
+#    print('v   ', v)
     while sum(v[len(sources):]) !=0:  #dari prosedur yang diberikan didapat bahwasanya syaratnya bukan perihal semua v sama dengna 0
-#        i=i+1
-#        print('iterasi  ',i)
         temp_c =0
+        was_passed = False
+#        print('#####iteration')
+#        print('max(v)   :', max(v))
         for x in range(len(v)):
             if v[x] == max(v) and x < len(sources):
                 k = x
                 for jl in range(len(depot)):
-#                    print('iterasine j  ', jl)
                     if v[len(sources)+jl] != 0:
-                        if temp_c == 0:
+                        if temp_c == 0 and was_passed == False:
                             temp_c = c[k][jl]
                             index[0]=k
                             index[1]=jl
+                            was_passed = True
                         elif c[k][jl] < temp_c:
-#                            print('hai')
                             temp_c = c[k][jl]
                             index[0]=k
                             index[1]=jl
                 j = index[1]
+#                print(k,j)
             elif v[x] == max(v) and x >= len(sources):
                 j = x - len(sources)
                 for kl in range(len(sources)):
                     if v[kl] != 0 :
-                        if temp_c == 0:
+                        if temp_c == 0 and was_passed == False:
                             temp_c = c[kl][j]
                             index[0]=kl
                             index[1]=j
+#                            print('temp_c', temp_c)
+#                            print('c[k][j]', c[kl][j])
+#                            print('k  ',kl)
+                            was_passed=True
                         elif c[kl][j]<temp_c:
                             temp_c = c[kl][j]
                             index[0]=kl
                             index[1]=j
                 k=index[0]
-#        print('maksimum v   ', max(v))
-#        print('kj  ', k, j)                
-#        print('paling murah  ', temp_c)
+#                print(k,j)
         g[k][j] = min(temp_a[k], temp_b[j])
+#        print('============')
+#        print(g[k][j])
         temp_a[k] = temp_a[k]-g[k][j]
         temp_d[k] = temp_d[k]+g[k][j]
-#        print("temp_a   ", temp_a)
-#        print("temp_d     ", temp_d)
         temp_b[j] = temp_b[j]-g[k][j]
+#        print(j)
         if temp_a[k] == 0:
             v[k] = 0
         if temp_b[j] == 0:
             v[len(sources)+j]= 0
-#        if i == 50:
-#            break
+#        print(v)
+#        print('============')
     return g, temp_d
 
 
@@ -80,9 +81,12 @@ def decoding(sources, depot, b, a, c ,v):
 #W = [150, 100, 200, 100]
 #d = [50, 100, 50, 100]
 #
-#permintaan_plant=[0,150,150,400]
-#persediaan_sups=[250, 0, 50]
+#permintaan_plant=[200,100,0,400]
+#persediaan_sups=[250, 200, 250]
 #plant_dummy = ["p1","p2","p3", "dummy"]
+#dc_dummy = ["dc1","dc2","dc3","dc4",'dummy']
+#perse= [200, 150, 0,0]
+#permi= [0, 0, 200, 100,50]
 #
 #c1=[100,100,150]
 #c2=[50,150,100,50]
@@ -94,10 +98,10 @@ def decoding(sources, depot, b, a, c ,v):
 #f = np.array([[0,0,0,0],[0,0,150,0],[150,0,0,0]])
 #q = np.array([[50,100,0,0],[0,0,0,0],[0,0,50,100],[0,0,0,0]])
 #
-#t = np.array([[4,3,1,0],[3,5,2,0],[1,6,4,0]])
-#a = np.array([[5,2,4,3],[4,6,3,5],[3,5,1,6]])
+#t = np.array([[4,3,1,100],[3,5,2,100],[1,6,4,100]])
+#a = np.array([[5,2,4,3,0],[4,6,3,5,0],[3,5,1,6,0]])
 #c = np.array([[3,5,2,4],[6,2,5,1],[4,3,6,5],[2,4,3,2]])
-##
+#
 ##stage1 = priority_based_enc(supplier, plant, persediaan_sups, permintaan_plant, t, b)
 ##v1 = stage1.encoding()
 ##print(v1)
@@ -109,7 +113,7 @@ def decoding(sources, depot, b, a, c ,v):
 #v3.pop()
 #print(v1)
 #
-#print(decoding(supplier, plant_dummy, permintaan_plant, sups, t, [4, 7, 2, 1, 5, 3, 6]))
+#print(decoding(plant, dc_dummy, permi, perse, a, [6, 4, 0, 0, 0, 7, 5,8]))
 
 
 

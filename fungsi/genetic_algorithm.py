@@ -5,10 +5,16 @@ Created on Tue Sep 17 15:32:21 2019
 
 @author: rudi
 """
-
+import sys
+sys.path.insert(0, '/home/rudi/Documents/skripsi')
+from encode import priority_based_enc
+from encode import integer_encoding
+from dummy import add_dummy
 import numpy as np
 import random
+import copy
 from evaluation_funtion import evaluation
+#from decoding_stage_3 import stage_3
 pop1 = [3,7,4,2,8,5,1,4,5,6,8,3,2,7,1,1,3,3,3]
 pop2 = [1,4,5,6,7,3,2,8,1,3,5,7,6,4,2,1,3,2,2]
 
@@ -143,15 +149,15 @@ def parentMutation(random_value, mutationRatio):
 def mulambdaSelection(mu,plusLambda, sups, D, W, d, t, a, c,g,v,r1, r2, weight1, weight2, weight3):
     evalMu = [0]*len(mu)
     for x in range(len(mu)):
-        func1 = evaluation(mu[x][0],mu[x][1],mu[x][2], sups, D, W, d, t,a,c,g,v,mu[x][3], mu[x][4], mu[x][5],mu[x][6], r1, r2).func1()
-        func2 = evaluation(mu[x][0],mu[x][1],mu[x][2], sups, D, W, d, t,a,c,g,v,mu[x][3], mu[x][4], mu[x][5],mu[x][6], r1, r2).func2()
-        func3 = evaluation(mu[x][0],mu[x][1],mu[x][2], sups, D, W, d, t,a,c,g,v,mu[x][3], mu[x][4], mu[x][5],mu[x][6], r1, r2).func3()
+        func1 = evaluation(mu[x][0],mu[x][1],mu[x][2], sups, D, W, d, t,a,c,g,v,mu[x][3], mu[x][4], r1, r2).func1()
+        func2 = evaluation(mu[x][0],mu[x][1],mu[x][2], sups, D, W, d, t,a,c,g,v,mu[x][3], mu[x][4], r1, r2).func2()
+        func3 = evaluation(mu[x][0],mu[x][1],mu[x][2], sups, D, W, d, t,a,c,g,v,mu[x][3], mu[x][4], r1, r2).func3()
         evalMu[x] = weight1*func1+weight2*func2+weight3*func3
     evalPlusLambda = [0]*len(plusLambda)
-    for y in range(len(plusLambda)):
-        func1 = evaluation(plusLambda[x][0],plusLambda[x][1],plusLambda[x][2], sups, D, W, d, t,a,c,g,v,plusLambda[x][3], plusLambda[x][4], plusLambda[x][5],plusLambda[x][6], r1, r2).func1()
-        func2 = evaluation(plusLambda[x][0],plusLambda[x][1],plusLambda[x][2], sups, D, W, d, t,a,c,g,v,plusLambda[x][3], plusLambda[x][4], plusLambda[x][5],plusLambda[x][6], r1, r2).func2()
-        func3 = evaluation(plusLambda[x][0],plusLambda[x][1],plusLambda[x][2], sups, D, W, d, t,a,c,g,v,plusLambda[x][3], plusLambda[x][4], plusLambda[x][5],plusLambda[x][6], r1, r2).func3()
+    for y in range(len(plusLambda)):#b,f,q, sups, D, W, d, t, a, c,g,v,p,z, r1, r2
+        func1 = evaluation(plusLambda[x][0],plusLambda[x][1],plusLambda[x][2], sups, D, W, d, t,a,c,g,v,plusLambda[x][3], plusLambda[x][4], r1, r2).func1()
+        func2 = evaluation(plusLambda[x][0],plusLambda[x][1],plusLambda[x][2], sups, D, W, d, t,a,c,g,v,plusLambda[x][3], plusLambda[x][4], r1, r2).func2()
+        func3 = evaluation(plusLambda[x][0],plusLambda[x][1],plusLambda[x][2], sups, D, W, d, t,a,c,g,v,plusLambda[x][3], plusLambda[x][4], r1, r2).func3()
         evalPlusLambda[x] = weight1*func1+weight2*func2+weight3*func3
     elite = [] # yang dimasukkan ke elite adalah parent atau lambda
     temporary = evalMu + evalPlusLambda
@@ -165,6 +171,42 @@ def mulambdaSelection(mu,plusLambda, sups, D, W, d, t, a, c,g,v,r1, r2, weight1,
         temporary.remove(max(temporary))
     
     return elite
+def evaluate(population, sups, D, W, d, t, a, c, g ,v,r1, r2, weight1, weight2, weight3):
+    evalPopulation = [0]*len(population)
+    for x in range(len(population)):
+        func1 = evaluation(population[x][0],population[x][1],population[x][2], sups, D, W, d, t,a,c,g,v,population[x][3], population[x][4], r1, r2).func1()
+        func2 = evaluation(population[x][0],population[x][1],population[x][2], sups, D, W, d, t,a,c,g,v,population[x][3], population[x][4], r1, r2).func2()
+        func3 = evaluation(population[x][0],population[x][1],population[x][2], sups, D, W, d, t,a,c,g,v,population[x][3], population[x][4], r1, r2).func3()
+        evalPopulation[x] = weight1*func1+weight2*func2+weight3*func3
+    return evalPopulation
+
+def rouletteWheel(evalPopulation, population):
+    total_fitness = sum(evalPopulation)
+    probabilityChromosom = [0]*len(evalPopulation)
+    for k in range(len(probabilityChromosom)):
+        probabilityChromosom[k] = evalPopulation[k]/total_fitness
+    cumulativeProbability = [0]*len(evalPopulation)
+    for k in range(len(probabilityChromosom)):
+        if k == 0:
+            cumulativeProbability[k] = probabilityChromosom[k]
+        else:
+            cumulativeProbability[k] = probabilityChromosom[k]+cumulativeProbability[k-1]
+    
+    newPopulation = [None]*len(population)
+    for k in range(len(newPopulation)):
+        rand = random.random()
+        if rand <= cumulativeProbability[0]:
+            newPopulation[k] = population[k]
+        else:
+            s=1
+            while s<len(population):
+                if rand <= cumulativeProbability[s] and rand > cumulativeProbability[s-1]:
+                    newPopulation[k] = population[s]
+                    break
+                s = s+1
+            
+    return newPopulation
+
 def roulettewheelSelection(population, sups, D, W, d, t, a, c, g ,v,r1, r2, weight1, weight2, weight3):
     evalPopulation = [0]*len(population)
     for x in range(len(population)):
@@ -197,7 +239,69 @@ def roulettewheelSelection(population, sups, D, W, d, t, a, c, g ,v,r1, r2, weig
                 s = s+1
             
     return newPopulation
-            
+def enc_pop(population, supplier, plant, dc, customer, sups, D, W, d, t, a, c):
+    encoding_population=[None]*len(population)
+    for i in range(len(population)):
+        p = population[i][3].copy()
+        z = population[i][4].copy()
+        for j in range(3):
+            if j == 0:
+                capacity = copy.deepcopy(sups)
+                demand = copy.deepcopy(D)
+                for m in range(len(plant)):
+                    demand[m] = sum(population[i][j+1][m])*p[m]#salah di sini begitupun pada yang bawah mengingat demand itu ditentukan oleh permintaan customer
+                plant_with_dummy=add_dummy(supplier, plant, capacity, demand, t, population[i][j])
+                shipment_with_dummy  = plant_with_dummy[0]
+                cost_with_dummy = plant_with_dummy[1]
+                depot_with_dummy =plant_with_dummy[2]
+                demand_with_dummy = plant_with_dummy[3]
+                v1 = priority_based_enc(supplier,depot_with_dummy, capacity, demand_with_dummy, cost_with_dummy, shipment_with_dummy).encoding()
+            elif j == 1:
+                capacity = copy.deepcopy(D)
+                for k in range(len(plant)):
+                    capacity[k] = capacity[k]*p[k]
+                demand = copy.deepcopy(W)
+                for m in range(len(dc)):
+                    demand[m] = sum(population[i][j+1][m])*z[m]
+                dc_with_dummy=add_dummy(plant, dc, capacity, demand, a, population[i][j])
+                shipment_with_dummy  = dc_with_dummy[0]
+                cost_with_dummy = dc_with_dummy[1]
+                depot_with_dummy =dc_with_dummy[2]
+                demand_with_dummy = dc_with_dummy[3]
+                v2 = priority_based_enc(plant, depot_with_dummy, capacity, demand_with_dummy, cost_with_dummy, shipment_with_dummy).encoding()
+            else:
+                temp_customer = customer.copy()
+                capacity = copy.deepcopy(W)
+                temp_cost = copy.deepcopy(c)
+                for m in range(len(dc)):
+                    capacity[m] = capacity[m]*z[m]
+                demand = copy.deepcopy(d)
+                temp = [0]*len(W)
+                population_aksen = copy.deepcopy(population[i][j])
+                for x in range(len(W)):
+                    if (capacity[x] - sum(population[i][j][x])) > 0:
+                        temp[x] = capacity[x] - sum(population[i][j][x])
+                if sum(temp) != 0:
+                    temp_customer.append("dummy")
+                    demand.append(sum(temp))
+                    temp_cost = np.append(temp_cost, np.array([[0]*len(W)]).T,1)
+                    population_aksen = np.append(population_aksen, np.array([temp]).T,1)
+                v3 = integer_encoding(dc, temp_customer, capacity, d,temp_cost,population_aksen).encode()
+        
+        encoding_population[i] = [v1,v2,v3]
+    return encoding_population
+def check_integer_enc(integerSet, capacity_value, demand_value):
+    check = True
+    capacity=copy.deepcopy(capacity_value)
+    capacityDemand = [0]*len(capacity)
+    for i in range(len(capacity_value)):
+        capacity[integerSet[i]-1] = capacity[integerSet[i]-1] - demand_value[i]
+        capacityDemand[integerSet[i]-1] = capacityDemand[integerSet[i]-1] + demand_value[i]
+    for i in range(len(capacity)):
+        if capacity_value[i] < capacityDemand[i]:
+            check = False
+            break
+    return check
 #print(integerMutation([1,3,4,5,2], 5))
 
 #spr = spare(pop1, sups, W, D, d)
@@ -213,3 +317,5 @@ def roulettewheelSelection(population, sups, D, W, d, t, a, c, g ,v,r1, r2, weig
 #print('parent 1  :',silang[0])
 #print('parent 2  :',silang[1])
 #print('v1: ', v1, 'v2: ', v2, 'v3: ', v3)
+#check= check_integer_enc([3, 3, 3, 3,4], W, d)
+#print(check)

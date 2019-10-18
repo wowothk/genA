@@ -1,5 +1,6 @@
 import random
 import numpy as np
+import copy
 
 class priority_based_enc:
     def __init__(self, sources, depot, a, b, c, g):
@@ -84,7 +85,9 @@ class priority_based_enc:
 #        print(temp_b)
 #        print(temp_a)
 #        print(temp_c)
+#        print(temp_g)
         index=[0,0]
+        temp_index = copy.deepcopy(index)
 #        checking_none=[]  or checking_none != v
 #        while temp_b[index[1]] != 0 or temp_a[index[0]] != 0:
         while sum(temp_b) != 0 or sum(temp_a)!=0: 
@@ -97,19 +100,40 @@ class priority_based_enc:
 #            print(i)
 #            print(index)
             temp_cost = 0 
+            was_passed = False
             for k in range(len(temp_sources)):
 #                temp_cost = 0
                 for j in range(len(temp_depot)):
+                    
                     if temp_g[k][j] != 0 and (temp_b[j] == temp_g[k][j] or temp_a[k]==temp_g[k][j]):
-                        if temp_cost == 0:
+                        if temp_cost == 0 and was_passed == False:
                             temp_cost=temp_c[k][j]
                             index[0] = k
                             index[1] = j
+                            was_passed = True
                         elif temp_c[k][j] < temp_cost:
                             temp_cost = temp_c[k][j]
                             index[0] = k
                             index[1] = j
-#            print("temp_cost", temp_cost)                            
+                    
+#            print("temp_cost", temp_cost)
+            
+            if i !=0 and index == temp_index:
+                for k in range(len(temp_sources)):
+#                temp_cost = 0
+                    for j in range(len(temp_depot)):
+                        if temp_g[k][j] != 0:
+                            if temp_cost == 0 and was_passed == False:
+                                temp_cost=temp_c[k][j]
+                                index[0] = k
+                                index[1] = j
+                                was_passed = True
+                            elif temp_c[k][j] < temp_cost:
+                                temp_cost = temp_c[k][j]
+                                index[0] = k
+                                index[1] = j
+                            
+            temp_index= copy.deepcopy(index)
             temp_b[index[1]] = temp_b[index[1]]-temp_g[index[0]][index[1]]
             temp_a[index[0]] = temp_a[index[0]]-temp_g[index[0]][index[1]] 
 #            print("tem_b", temp_b)
@@ -142,8 +166,9 @@ class priority_based_enc:
             while v[t] != None:
                 t = random.randint(0, len(temp_depot)+len(temp_sources)-1)
             v[t] = l+1
-        
+#        print(v)
         ##### tambahan #####
+#        print(sum(temp_a))
         if sum(temp_b) == 0 and sum(temp_a) !=0:
             
 #            temp_a = 0
@@ -203,6 +228,15 @@ class integer_encoding:
 #dc = ["dc1","dc2","dc3","dc4"]
 #customer =["cust1","cust2", "cust3","cust4"]
 #
+#x=[np.array([[ 50,   0,   0],
+#         [  0,   0,   0],
+#         [150, 100,   0]]), np.array([[  0,   0, 200,   0,0],
+#         [  0,   0,   0, 100,50],
+#         [  0,   0,   0,   0,0]]), np.array([[  0,   0,   0,   0],
+#         [  0,   0,   0,   0],
+#         [ 50, 100,  50,   0],
+#         [  0,   0,   0, 100]]), [1, 1, 0], np.array([0, 0, 1, 1])]
+#
 #sups =[250,200,250]
 #D = [200,150,200] 
 #W = [150, 100, 200, 100]
@@ -211,7 +245,7 @@ class integer_encoding:
 #permintaan_plant=[0,150,150,400]
 #persediaan_sups=[250, 0, 50]
 #plant_dummy = ["p1","p2","p3", "dummy"]
-#
+#dc_dummy = ["dc1","dc2","dc3","dc4",'dummy']
 #c1=[100,100,150]
 #c2=[50,150,100,50]
 #c3=np.array([[1,6,5,2],[6,2,4,5],[3,4,2,1]])
@@ -224,9 +258,10 @@ class integer_encoding:
 #
 #t = np.array([[4,3,1,0],[3,5,2,0],[1,6,4,0]])
 #a = np.array([[5,2,4,3],[4,6,3,5],[3,5,1,6]])
+#t_a=np.array([[5,2,4,3,0],[4,6,3,5,0],[3,5,1,6,0]])
 #c = np.array([[3,5,2,4],[6,2,5,1],[4,3,6,5],[2,4,3,2]])
 ##
-#stage1 = priority_based_enc(supplier, plant_dummy, sups, permintaan_plant, t, b)
+#stage1 = priority_based_enc(plant, dc_dummy, [200, 150, 0], [0, 0, 200, 100,50], t_a, x[1])
 #v1 = stage1.encoding()
 #print(v1)
 #stage2 = priority_based_enc(plant, dc, D, W, a, f, 3)
