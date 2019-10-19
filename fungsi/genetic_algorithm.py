@@ -171,12 +171,12 @@ def mulambdaSelection(mu,plusLambda, sups, D, W, d, t, a, c,g,v,r1, r2, weight1,
         temporary.remove(max(temporary))
     
     return elite
-def evaluate(population, sups, D, W, d, t, a, c, g ,v,r1, r2, weight1, weight2, weight3):
+def evaluate(population, sups, D, W, d, t, a, c, g ,v,r1, r2, weight1, weight2, weight3, h, tau):
     evalPopulation = [0]*len(population)
     for x in range(len(population)):
-        func1 = evaluation(population[x][0],population[x][1],population[x][2], sups, D, W, d, t,a,c,g,v,population[x][3], population[x][4], r1, r2).func1()
-        func2 = evaluation(population[x][0],population[x][1],population[x][2], sups, D, W, d, t,a,c,g,v,population[x][3], population[x][4], r1, r2).func2()
-        func3 = evaluation(population[x][0],population[x][1],population[x][2], sups, D, W, d, t,a,c,g,v,population[x][3], population[x][4], r1, r2).func3()
+        func1 = evaluation(population[x][0],population[x][1],population[x][2], sups, D, W, d, t,a,c,g,v,population[x][3], population[x][4], r1, r2, h, tau).func1()
+        func2 = evaluation(population[x][0],population[x][1],population[x][2], sups, D, W, d, t,a,c,g,v,population[x][3], population[x][4], r1, r2, h, tau).func2()
+        func3 = evaluation(population[x][0],population[x][1],population[x][2], sups, D, W, d, t,a,c,g,v,population[x][3], population[x][4], r1, r2, h, tau).func3()
         evalPopulation[x] = weight1*func1+weight2*func2+weight3*func3
     return evalPopulation
 

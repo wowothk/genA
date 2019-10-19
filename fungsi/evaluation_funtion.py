@@ -26,8 +26,10 @@ c: the cost of shipment from dc to customer
 """
 import numpy as np, numpy.random
 import math
+from check_time import check_time
+from check_time import summation_by_time
 class evaluation:
-    def __init__(self, b,f,q, sups, D, W, d, t, a, c,g,v,p,z, r1, r2):
+    def __init__(self, b,f,q, sups, D, W, d, t, a, c,g,v,p,z, r1, r2, h, tau):
         self.b = b
         self.f = f
         self.q = q
@@ -46,6 +48,8 @@ class evaluation:
 #        self.Od = Od
         self.r1 = r1
         self.r2 = r2
+        self.h = h
+        self.tau = tau
     
     def func1(self):
         costPlant = [0]*len(self.p)
@@ -79,11 +83,13 @@ class evaluation:
         return sum(costPlant)+sum(costDc)+sum(sumcostOfb)+sum(sumcostOff)+sum(sumcostOfq)
     
     def func2(self):
-        sumOfq = [0]*len(self.W)
-        for j in range(len(self.W)):
-            sumOfq[j] = sum(self.q[j])
+        C=check_time(self.h, self.tau, len(self.W), len(self.d))
+        summation = summation_by_time(self.q, C)
+#        sumOfq = [0]*len(self.W)
+#        for j in range(len(self.W)):
+#            sumOfq[j] = sum(self.q[j])
         
-        return sum(sumOfq)/sum(self.d)
+        return summation/sum(self.d)
     
     def func3(self):
         openPlant = list(np.multiply(self.D, self.p))
