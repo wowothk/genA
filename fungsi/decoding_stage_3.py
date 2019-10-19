@@ -35,7 +35,8 @@ class stage_3:
         capacityW=copy.deepcopy(self.w)
         for k in range(len(self.v)):
             chromosom[k] = chromosom[k]-1
-            
+        if len(self.v)>len(self.d):
+            chromosom.pop()            
         for i in range(len(self.I)):
             z[chromosom[i]] = 1
             y[chromosom[i]][i] = 1  
@@ -100,7 +101,6 @@ class stage_3:
                 for x in Cd:
                     if i == self.J.index(x):
                         temp_capacity[i] = 0
-#            print(temp_capacity)
             for i in range(len(chromosom)):
                 for j in range(len(temp_capacity)):
                     if temp_capacity[j] >= self.d[i]:
