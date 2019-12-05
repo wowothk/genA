@@ -81,7 +81,38 @@ class evaluation:
                 costOfq[j][i] = self.q[j][i]*self.c[j][i]
             sumcostOfq[j] = sum(costOfq[j])
         return sum(costPlant)+sum(costDc)+sum(sumcostOfb)+sum(sumcostOff)+sum(sumcostOfq)
-    
+
+    def func1_alternative(self):
+        costPlant = [0]*len(self.p)
+        for k in range(len(self.p)):
+            costPlant[k] = self.g[k]*self.p[k]
+        
+        costDc = [0]*len(self.z)
+        for j in range(len(self.z)):
+            costDc[j] = self.v[j]*self.z[j]
+        
+        costOfb = np.array([[0]*len(self.D)]*len(self.sups))
+        sumcostOfb = [0]*len(self.sups)
+        for s in range(len(self.sups)):
+            for k in range(len(self.D)):
+                costOfb[s][k] = self.b[s][k]*0.02458*self.t[s][k]
+            sumcostOfb[s] = sum(costOfb[s])
+        
+        costOff = np.array([[0]*len(self.W)]*len(self.D))
+        sumcostOff = [0]*len(self.D)
+        for k in range(len(self.D)):
+            for j in range(len(self.W)):
+                costOff[k][j] = self.f[k][j]*self.a[k][j]
+            sumcostOff[k] = sum(costOff[k])    
+            
+        costOfq = np.array([[0]*len(self.d)]*len(self.W))
+        sumcostOfq = [0]*len(self.W)
+        for j in range(len(self.W)):
+            for i in range(len(self.d)):
+                costOfq[j][i] = self.q[j][i]*self.c[j][i]
+            sumcostOfq[j] = sum(costOfq[j])
+        return sum(costPlant)+sum(costDc)+sum(sumcostOfb)+sum(sumcostOff)+sum(sumcostOfq)
+        
     def func2(self):
         C=check_time(self.h, self.tau, len(self.W), len(self.d))
         summation = summation_by_time(self.q, C)
@@ -99,11 +130,9 @@ class evaluation:
         for k in range(len(self.D)):
             if self.p[k] != 0:
                 equation1[k]=(sum(self.f[k])/self.D[k]-(np.sum(self.f)/sum(openPlant)))**2
-            
         for j in range(len(self.W)):
             if self.z[j] != 0:
-                equation2[j]=(sum(self.q[j])/self.W[j]-(np.sum(self.q)/sum(openDc)))**2
-        
+                equation2[j]=(sum(self.q[j])/self.W[j]-(np.sum(self.q)/sum(openDc)))**2        
         return self.r1*math.sqrt(sum(equation1)/sum(self.p))+self.r2*math.sqrt(sum(equation2)/sum(self.z))
     
     """

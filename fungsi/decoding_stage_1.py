@@ -46,6 +46,7 @@ class stage_1:
         if len(self.v1) > len(self.S)+len(self.K):
             chromosom1.pop()
 #        print("D   ", self.D)
+#        print("#########################")
         b = decoding(self.S, self.K, capacityD, self.s, self.t, chromosom1)[0]
         return b,f,q,p,z
     

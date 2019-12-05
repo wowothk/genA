@@ -25,6 +25,7 @@ def repair_alg(DOK, DCK, DP, DOP, d_tot_cap, d_tot_dem):
         i=i+1
 #        print(i)
 #        print(d_tot_cap)
+#        print(d_tot_dem)
 #        print(DOP)
         if DOP > DP and d_tot_cap >= d_tot_dem:
             while DOP > DP:

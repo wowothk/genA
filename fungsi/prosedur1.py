@@ -5,7 +5,7 @@ def decoding(sources, depot, b, a, c ,v):
     temp_a = copy.deepcopy(a)
     temp_d = [0]*len(a)
     temp_b= copy.deepcopy(b)
-    g = np.array([[0]*len(depot)]*len(sources))
+    g = np.array([[0]*len(depot)]*len(sources)).astype(float)
     k=0
     j=0
     index=[0,0]
@@ -16,10 +16,15 @@ def decoding(sources, depot, b, a, c ,v):
         if b[i] == 0:
             v[len(sources)+i]=0
 #    print('v   ', v)
+#    print(temp_a, temp_b)
+    i=0
     while sum(v[len(sources):]) !=0:  #dari prosedur yang diberikan didapat bahwasanya syaratnya bukan perihal semua v sama dengna 0
         temp_c =0
         was_passed = False
-#        print('#####iteration')
+        i=i+1
+#        print('#####iteration',i)
+#        if i == 8:
+#            break
 #        print('max(v)   :', max(v))
         for x in range(len(v)):
             if v[x] == max(v) and x < len(sources):
@@ -43,7 +48,7 @@ def decoding(sources, depot, b, a, c ,v):
                     if v[kl] != 0 :
                         if temp_c == 0 and was_passed == False:
                             temp_c = c[kl][j]
-                            index[0]=kl
+                            index[0]=kl#        print('#####iteration'#        print('#####iteration',i),i)
                             index[1]=j
 #                            print('temp_c', temp_c)
 #                            print('c[k][j]', c[kl][j])
@@ -55,9 +60,13 @@ def decoding(sources, depot, b, a, c ,v):
                             index[1]=j
                 k=index[0]
 #                print(k,j)
+#        print(temp_a[k],temp_b[j])
         g[k][j] = min(temp_a[k], temp_b[j])
+#        print(temp_a, temp_b)
 #        print('============')
-#        print(g[k][j])
+#        tempg=min(temp_a[k], temp_b[j])
+#        print(tempg)
+#        print('g[k][j]',g[k][j])
         temp_a[k] = temp_a[k]-g[k][j]
         temp_d[k] = temp_d[k]+g[k][j]
         temp_b[j] = temp_b[j]-g[k][j]
@@ -69,6 +78,32 @@ def decoding(sources, depot, b, a, c ,v):
 #        print(v)
 #        print('============')
     return g, temp_d
+
+
+#import pandas as pd
+#
+#data_Path = '/home/rudi/Documents/import_excel/datacustomer.xlsx'
+#
+#dataNama = pd.read_excel(data_Path,sheet_name='naming')
+#supplier = np.array(dataNama['supplier'].dropna(how='any'))
+#plant = np.array(dataNama['plant'].dropna(how='any'))
+#dc = np.array(dataNama['dc'].dropna(how='any'))
+#customer =np.array(dataNama['customer'].dropna(how='any'))
+#
+#dataCapacity = pd.read_excel(data_Path, sheet_name="kapasitas")
+#supsinton =np.array(dataCapacity['supplier (ton)'].dropna(how='any'))
+#D = np.array(dataCapacity['plant(pac)'].dropna(how='any'))
+#W = np.array(dataCapacity['dc(pac)'].dropna(how='any'))
+#sups = [None]*len(supsinton)
+#for x in range(len(supsinton)):
+#    sups[x] = supsinton[x]/0.2458
+#    
+#dataDemand = pd.read_excel(data_Path, sheet_name = 'permintaan customer')
+#d = np.array(dataDemand['demand'])
+#
+#t = np.array(pd.read_excel(data_Path, sheet_name='supplier ke plant').iloc[:,1:4])
+#a = np.array(pd.read_excel(data_Path, sheet_name='plant ke dc').iloc[:,1:7])
+#c = np.array(pd.read_excel(data_Path, sheet_name='dc ke customer').iloc[:,1:64])
 
 
 #supplier = ["s1","s2","s3"]
@@ -113,7 +148,7 @@ def decoding(sources, depot, b, a, c ,v):
 #v3.pop()
 #print(v1)
 #
-#print(decoding(plant, dc_dummy, permi, perse, a, [6, 4, 0, 0, 0, 7, 5,8]))
+#print(decoding(supplier, plant, sups, D, t, [5, 8, 6, 7, 2, 1, 4, 3]))
 
 
 

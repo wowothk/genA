@@ -137,7 +137,8 @@ g=[4,5,6]
 v=[3,7,5,6]
 #weight =np.random.dirichlet(np.ones(3), size=1)
 weight=np.array([[0.36459012, 0.31979052, 0.31561936]])
-the_number_of_generation=1000
+r=[0.36026144, 0.63973856]
+the_number_of_generation=1
 # initialization
 encoding_population = enc_pop(population, supplier, plant, dc, customer, sups, D, W, d, t, a, c)
 mu = copy.deepcopy(encoding_population)
@@ -184,10 +185,10 @@ for generation in range(the_number_of_generation):
             lambdas[index_parent[x]][1] = swapMutation(lambdas[index_parent[x]][1])
     mupluslambda = mu + lambdas
     decode_mupluslambda=copy.deepcopy(mupluslambda)
-#    print('selection')
+#    print('selection')    
     for x in range(len(mupluslambda)):
         decode_mupluslambda[x]=stage_1(supplier, plant, dc, customer, 1, sups, D, W, d,mupluslambda[x][0],mupluslambda[x][1],mupluslambda[x][2],t,a).decode()
-    eval_mupluslambda=evaluate(decode_mupluslambda,sups, D, W,d,t,a,c,g,v,0.8,0.8,weight[0][0],weight[0][1],weight[0][2], h, tau)
+    eval_mupluslambda=evaluate(decode_mupluslambda,sups, D, W,d,t,a,c,g,v,r[0],r[1],weight[0][0],weight[0][1],weight[0][2], h, tau)[0]
     newPopulation=[]
     
     #dict.fromkeys() digunakan untuk membuat list tidak terdapat duplikat
@@ -201,13 +202,13 @@ for generation in range(the_number_of_generation):
     for x in range(len(afterSelectBest)):
         decode_afterSelectBest[x]=stage_1(supplier, plant, dc, customer, 1, sups, D, W, d,afterSelectBest[x][0],afterSelectBest[x][1],afterSelectBest[x][2],t,a).decode()
 #    print('rolet')
-    eval_afterSelectBest = evaluate(decode_afterSelectBest,sups, D, W,d,t,a,c,g,v,0.8,0.8,weight[0][0],weight[0][1], weight[0][2], h, tau) 
+    eval_afterSelectBest = evaluate(decode_afterSelectBest,sups, D, W,d,t,a,c,g,v,r[0],r[1],weight[0][0],weight[0][1], weight[0][2], h, tau)[0] 
     afterRouletteSelection=rouletteWheel(eval_afterSelectBest, afterSelectBest)
     decode_afterRouletteSelection =[0]*len(afterRouletteSelection)
     for x in range(len(afterRouletteSelection)):
         decode_afterRouletteSelection[x]=stage_1(supplier, plant, dc, customer, 1, sups, D, W, d,afterRouletteSelection[x][0],afterRouletteSelection[x][1],afterRouletteSelection[x][2],t,a).decode()
     
-    eval_afterRouletteSelection=evaluate(decode_afterRouletteSelection,sups, D, W, d, t, a, c, g ,v,0.8, 0.8, weight[0][0], weight[0][1], weight[0][2], h, tau)    
+    eval_afterRouletteSelection=evaluate(decode_afterRouletteSelection,sups, D, W, d, t, a, c, g ,v,r[0], r[1], weight[0][0], weight[0][1], weight[0][2], h, tau)[0]    
     best_select = sorted(eval_afterRouletteSelection)[0:len(mu)-len(newPopulation)]
     for i in range(len(best_select)):
         newPopulation.append(afterSelectBest[eval_afterRouletteSelection.index(best_select[i])])
@@ -219,6 +220,9 @@ decode_population =[0]*len(newPopulation)
 for x in range(len(newPopulation)):
     decode_population[x]=stage_1(supplier, plant, dc, customer, 1, sups, D, W, d,newPopulation[x][0],newPopulation[x][1],newPopulation[x][2],t,a).decode()    
 
-
-print(evaluate(decode_population,sups, D, W,d,t,a,c,g,v,0.8,0.8,weight[0][0],weight[0][1],weight[0][2], h, tau))
-print("setelah operasi genetik ", min(evaluate(decode_population,sups, D, W,d,t,a,c,g,v,0.8,0.8,weight[0][0],weight[0][1],weight[0][2],h,tau)))
+greatPopulation = evaluate(decode_population,sups, D, W,d,t,a,c,g,v,r[0],r[1],weight[0][0],weight[0][1],weight[0][2], h, tau)
+#print("minimum fungsi satu", greatPopulation[1])
+#print("maximum fungsi dua", greatPopulation[2])
+#print("minimum fungsi satu", greatPopulation[3])
+print(greatPopulation[0])
+print("setelah operasi genetik ", min(greatPopulation[0]))

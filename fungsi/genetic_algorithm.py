@@ -173,12 +173,82 @@ def mulambdaSelection(mu,plusLambda, sups, D, W, d, t, a, c,g,v,r1, r2, weight1,
     return elite
 def evaluate(population, sups, D, W, d, t, a, c, g ,v,r1, r2, weight1, weight2, weight3, h, tau):
     evalPopulation = [0]*len(population)
+    evalf1 = [0]*len(population)
+    evalf2 =[0]*len(population)
+    evalf3 =[0]*len(population)
     for x in range(len(population)):
-        func1 = evaluation(population[x][0],population[x][1],population[x][2], sups, D, W, d, t,a,c,g,v,population[x][3], population[x][4], r1, r2, h, tau).func1()
+        func1 = evaluation(population[x][0],population[x][1],population[x][2], sups, D, W, d, t,a,c,g,v,population[x][3], population[x][4], r1, r2, h, tau).func1_alternative()
         func2 = evaluation(population[x][0],population[x][1],population[x][2], sups, D, W, d, t,a,c,g,v,population[x][3], population[x][4], r1, r2, h, tau).func2()
         func3 = evaluation(population[x][0],population[x][1],population[x][2], sups, D, W, d, t,a,c,g,v,population[x][3], population[x][4], r1, r2, h, tau).func3()
-        evalPopulation[x] = weight1*func1+weight2*func2+weight3*func3
-    return evalPopulation
+        evalf1[x] = func1
+        evalf2[x] = func2
+        evalf3[x] = func3
+        
+    print(evalf1,evalf2,evalf3)
+    f1 = normalize(evalf1)
+    f2 = normalize(evalf2)
+    f3 = normalize(evalf3)
+    
+    for x in range(len(population)):
+        evalPopulation[x] = weight1*f1[x]-weight2*f2[x]+weight3*f3[x]
+#    evalPopulation[x] = weight1*func1-weight2*func2+weight3*func3
+    return evalPopulation, evalf1, evalf2, evalf3
+
+def evaluate_alternative(population, sups, D, W, d, t, a, c, g ,v,r1, r2, weight1, weight2, weight3, h, tau):
+    evalPopulation = [0]*len(population)
+    evalAsf = [0]*len(population)
+    evalf1 = [0]*len(population)
+    evalf2 =[0]*len(population)
+    evalf3 =[0]*len(population)
+    for x in range(len(population)):
+        func1 = evaluation(population[x][0],population[x][1],population[x][2], sups, D, W, d, t,a,c,g,v,population[x][3], population[x][4], r1, r2, h, tau).func1_alternative()
+        func2 = evaluation(population[x][0],population[x][1],population[x][2], sups, D, W, d, t,a,c,g,v,population[x][3], population[x][4], r1, r2, h, tau).func2()
+        func3 = evaluation(population[x][0],population[x][1],population[x][2], sups, D, W, d, t,a,c,g,v,population[x][3], population[x][4], r1, r2, h, tau).func3()
+        evalf1[x] = func1
+        evalf2[x] = func2
+        evalf3[x] = func3
+        evalAsf[x] = [func1, func2, func3]
+#    print(evalf1,evalf2,evalf3)
+    f1 = normalize(evalf1)
+    f2 = normalize(evalf2)
+    f3 = normalize(evalf3)
+    
+    for x in range(len(population)):
+        evalPopulation[x] = weight1*f1[x]-weight2*f2[x]+weight3*f3[x]
+#    evalPopulation[x] = weight1*func1-weight2*func2+weight3*func3
+    return evalPopulation, evalf1, evalf2, evalf3, evalAsf, f1,f2,f3
+def normalize(f):
+    temp_f = copy.deepcopy(f)
+    if (max(f)-min(f))==0:
+        for i in range(len(f)):
+            temp_f[i] = 1
+    else:    
+        for i in range(len(f)):
+            temp_f[i] = (f[i] - min(f))/(max(f)-min(f))
+    return temp_f
+
+def randomPopulation(len_of_sups, len_of_plant,len_of_dc, len_of_customer, the_number_of_individu):
+    stage1=[]
+    for x in range(len_of_sups+len_of_plant):
+        stage1.append(x+1)
+    stage2=[]
+    for x in range(len_of_dc+len_of_plant):
+        stage2.append(x+1)
+    stage3=[None]*len_of_customer
+    for x in range(len_of_customer):
+        stage3[x]=random.randint(1,len_of_dc)
+    population=np.array([[None]*3]*the_number_of_individu)
+    for x in range(the_number_of_individu):
+        for y in range(3):
+            if y==0:
+                population[x][y]=random.sample(stage1, len(stage1))
+            elif y==1:
+                population[x][y]=random.sample(stage2, len(stage2))
+            else:
+                for z in range(len_of_customer):
+                    stage3[z]=random.randint(1,len_of_dc)
+                population[x][y]=copy.deepcopy(stage3)
+    return population.tolist()
 
 def rouletteWheel(evalPopulation, population):
     total_fitness = sum(evalPopulation)
@@ -196,7 +266,7 @@ def rouletteWheel(evalPopulation, population):
     for k in range(len(newPopulation)):
         rand = random.random()
         if rand <= cumulativeProbability[0]:
-            newPopulation[k] = population[k]
+            newPopulation[k] = population[0]
         else:
             s=1
             while s<len(population):
@@ -302,8 +372,33 @@ def check_integer_enc(integerSet, capacity_value, demand_value):
             check = False
             break
     return check
-#print(integerMutation([1,3,4,5,2], 5))
 
+def isDominated(z, Z):
+    temp_Z = np.unique(np.array(Z),axis=0)
+    pop = [list(x) for x in temp_Z]
+    for x in pop:
+        if z[0] < x[0] and z[1] >= x[1] and z[2] <= x[2]:
+            status = "nondominated"
+        elif z[0] <= x[0] and z[1] > x[1] and z[2] <= x[2]:
+            status = "nondominated"
+        elif z[0] <= x[0] and z[1] >= x[1] and z[2] < x[2]:
+            status = "nondominated"
+        else:
+            status = "dominated"
+            break
+    return status
+
+def sumOfNonDominated(Z):
+    status = ['a']*len(Z)
+    for i in range(len(status)):
+        status[i] = isDominated(Z[i], Z)
+    summation = len(np.where(np.array(status) == 'nondominated'))
+    return summation, status
+#print(integerMutation([1,3,4,5,2], 5))
+#s=randomPopulation(4,3,4,5,2)
+#print(s)    
+#s=list(randomPopulation(4,3,4,5,2))
+#print(s[0)
 #spr = spare(pop1, sups, W, D, d)
 #v1=spr[0]
 #v2=spr[1]

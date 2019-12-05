@@ -17,15 +17,15 @@ from prosedur1 import decoding
 
 class stage_2:
     def __init__(self, K, J, I,De, w, d, a, v2, v3):
-        self.K = K
-        self.J = J
+        self.K = list(K)
+        self.J = list(J)
         self.a = a
         self.v2 = v2
-        self.I = I
-        self.De = De
+        self.I = list(I)
+        self.De = list(De)
         self.v3 = v3
-        self.d = d
-        self.w = w
+        self.d = list(d)
+        self.w = list(w)
         
     def decode(self):
         D_aksen = [0]*len(self.K)
