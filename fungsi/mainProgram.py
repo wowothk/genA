@@ -138,7 +138,7 @@ v=[3,7,5,6]
 #weight =np.random.dirichlet(np.ones(3), size=1)
 weight=np.array([[0.36459012, 0.31979052, 0.31561936]])
 r=[0.36026144, 0.63973856]
-the_number_of_generation=1
+the_number_of_generation=2
 # initialization
 encoding_population = enc_pop(population, supplier, plant, dc, customer, sups, D, W, d, t, a, c)
 mu = copy.deepcopy(encoding_population)

@@ -21,12 +21,15 @@ def repair_alg(DOK, DCK, DP, DOP, d_tot_cap, d_tot_dem):
     for y in range(len(DCK)):
         temp_dck[y]=DCK[y]
     i=0        
-    while DOP != DP or d_tot_cap < d_tot_dem:
+    while DOP > DP or d_tot_cap < d_tot_dem:
         i=i+1
+#        if i == 50: 
+#            break
 #        print(i)
 #        print(d_tot_cap)
 #        print(d_tot_dem)
 #        print(DOP)
+#        print(DP)
         if DOP > DP and d_tot_cap >= d_tot_dem:
             while DOP > DP:
                 if len(temp_dok) != 0:
@@ -36,8 +39,7 @@ def repair_alg(DOK, DCK, DP, DOP, d_tot_cap, d_tot_dem):
                     temp_dck.append(temp)
                     DOP = len(temp_dok)
             d_tot_cap = sum(temp_dok)
-            
-        if (DOP<DP or DOP >= DP) and d_tot_cap< d_tot_dem:
+        elif (DOP<DP or DOP >= DP) and d_tot_cap< d_tot_dem:
             while d_tot_cap < d_tot_dem:
                 if len(temp_dck) != 0:
                     index = randint(0, len(temp_dck)-1)

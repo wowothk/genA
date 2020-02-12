@@ -14,6 +14,7 @@ import numpy as np
 import random
 import copy
 from evaluation_funtion import evaluation
+from eval2 import evaluation2
 #from decoding_stage_3 import stage_3
 pop1 = [3,7,4,2,8,5,1,4,5,6,8,3,2,7,1,1,3,3,3]
 pop2 = [1,4,5,6,7,3,2,8,1,3,5,7,6,4,2,1,3,2,2]
@@ -217,11 +218,54 @@ def evaluate_alternative(population, sups, D, W, d, t, a, c, g ,v,r1, r2, weight
         evalPopulation[x] = weight1*f1[x]-weight2*f2[x]+weight3*f3[x]
 #    evalPopulation[x] = weight1*func1-weight2*func2+weight3*func3
     return evalPopulation, evalf1, evalf2, evalf3, evalAsf, f1,f2,f3
+
+def evaluate_problem1(population, sups, D, W, d, t, a, c, g ,v,r1, r2, weight1, weight2, h, tau):
+    evalPopulation = [0]*len(population)
+    evalAsf = [0]*len(population)
+    evalf1 = [0]*len(population)
+    evalf2 =[0]*len(population)
+#    evalf3 =[0]*len(population)
+    for x in range(len(population)):
+        func1 = evaluation(population[x][0],population[x][1],population[x][2], sups, D, W, d, t,a,c,g,v,population[x][3], population[x][4], r1, r2, h, tau).func1_alternative()
+        func2 = evaluation(population[x][0],population[x][1],population[x][2], sups, D, W, d, t,a,c,g,v,population[x][3], population[x][4], r1, r2, h, tau).func2()
+#        func3 = evaluation(population[x][0],population[x][1],population[x][2], sups, D, W, d, t,a,c,g,v,population[x][3], population[x][4], r1, r2, h, tau).func3()
+        evalf1[x] = func1
+        evalf2[x] = func2
+#        evalf3[x] = func3
+        evalAsf[x] = [func1, func2]
+#    print(evalf1,evalf2,evalf3)
+    f1 = normalize(evalf1)
+    f2 = normalize(evalf2)
+#    f3 = normalize(evalf3)
+    
+    for x in range(len(population)):
+        evalPopulation[x] = weight1*f1[x]-weight2*f2[x]
+#    evalPopulation[x] = weight1*func1-weight2*func2+weight3*func3
+    return evalPopulation, evalf1, evalf2, evalAsf, f1,f2
+
+def evaluate_problem2(population, sups, D, W, d, t, a, c, g ,v,r1, r2, weight1, weight3):
+    evalPopulation = [0]*len(population)
+    evalAsf = [0]*len(population)
+    evalf1 = [0]*len(population)
+    evalf3 =[0]*len(population)
+    for x in range(len(population)):
+        func1 = evaluation2(population[x][0],population[x][1],population[x][2], sups, D, W, d, t,a,c,g,v,population[x][3], population[x][4], r1, r2).func1_alternative()
+        func3 = evaluation2(population[x][0],population[x][1],population[x][2], sups, D, W, d, t,a,c,g,v,population[x][3], population[x][4], r1, r2).func3()
+        evalf1[x] = func1
+        evalf3[x] = func3
+        evalAsf[x] = [func1, func3]
+    f1 = normalize(evalf1)
+    f3 = normalize(evalf3)
+    
+    for x in range(len(population)):
+        evalPopulation[x] = weight1*f1[x]+weight3*f3[x]
+    return evalPopulation, evalf1, evalf3, evalAsf, f1,f3
+
 def normalize(f):
     temp_f = copy.deepcopy(f)
     if (max(f)-min(f))==0:
         for i in range(len(f)):
-            temp_f[i] = 1
+            temp_f[i] = 0
     else:    
         for i in range(len(f)):
             temp_f[i] = (f[i] - min(f))/(max(f)-min(f))
@@ -394,6 +438,18 @@ def sumOfNonDominated(Z):
         status[i] = isDominated(Z[i], Z)
     summation = len(np.where(np.array(status) == 'nondominated'))
     return summation, status
+
+
+
+# semen tonasa andi burhanuddin
+#def evaluation_semen(population, a, f, x, y, b, w,c):
+#    evalPopulation = [0]*len(population)
+#    for x in range(len(population)):
+#        func1 = evaluation(population[x][0],population[x][1],population[x][2], sups, D, W, d, t,a,c,g,v,population[x][3], population[x][4], r1, r2, h, tau).func1_alternative()
+#    
+#    return evalPopulation
+
+
 #print(integerMutation([1,3,4,5,2], 5))
 #s=randomPopulation(4,3,4,5,2)
 #print(s)    

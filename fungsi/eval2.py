@@ -1,6 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
+Created on Thu Dec 26 15:11:51 2019
+
+@author: rudi
+"""
+
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
 Created on Tue Oct  8 16:53:00 2019
 
 @author: rudi
@@ -29,8 +37,8 @@ import math
 from check_time import check_time
 from check_time import summation_by_time
 
-class evaluation:
-    def __init__(self, b,f,q, sups, D, W, d, t, a, c,g,v,p,z, r1, r2, h, tau):
+class evaluation2:
+    def __init__(self, b,f,q, sups, D, W, d, t, a, c,g,v,p,z, r1, r2):
         self.b = b
         self.f = f
         self.q = q
@@ -49,8 +57,7 @@ class evaluation:
 #        self.Od = Od
         self.r1 = r1
         self.r2 = r2
-        self.h = h
-        self.tau = tau
+
     
     def func1(self):
         costPlant = [0]*len(self.p)
@@ -114,14 +121,14 @@ class evaluation:
             sumcostOfq[j] = sum(costOfq[j])
         return sum(costPlant)+sum(costDc)+sum(sumcostOfb)+sum(sumcostOff)+sum(sumcostOfq)
         
-    def func2(self):
-        C=check_time(self.h, self.tau, len(self.W), len(self.d))
-        summation = summation_by_time(self.q, C)
-#        sumOfq = [0]*len(self.W)
-#        for j in range(len(self.W)):
-#            sumOfq[j] = sum(self.q[j])
-        
-        return summation/sum(self.d)
+#    def func2(self):
+#        C=check_time(self.h, self.tau, len(self.W), len(self.d))
+#        summation = summation_by_time(self.q, C)
+##        sumOfq = [0]*len(self.W)
+##        for j in range(len(self.W)):
+##            sumOfq[j] = sum(self.q[j])
+#        
+#        return summation/sum(self.d)
     
     def func3(self):
         openPlant = list(np.multiply(self.D, self.p))

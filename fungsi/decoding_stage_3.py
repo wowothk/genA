@@ -83,6 +83,7 @@ class stage_3:
                                 capacityW[je] = capacityW[je] + q[je][temp[k]]
             return w_aksen, q, Cd, z
         else:
+            
             temp_j = np.array(self.J)
             temp_od = np.array(Od)
             index_od = np.where(np.in1d(temp_j, temp_od))
