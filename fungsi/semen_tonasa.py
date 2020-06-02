@@ -46,6 +46,7 @@ from genetic_algorithm import evaluate_alternative
 from genetic_algorithm import rouletteWheel
 from genetic_algorithm import randomPopulation
 from genetic_algorithm import evaluate_problem2
+from genetic_algorithm import ordered
 #from genetic_algorithm import roulettewheelSelection
 from genetic_algorithm import enc_pop
 #from genetic_algorithm import check_integer_enc
@@ -53,6 +54,8 @@ from decoding_stage_1 import stage_1
 import copy
 from mpl_toolkits import mplot3d
 import matplotlib.pyplot as plt
+import re
+
 
 data_Path = '/home/rudi/Documents/skripsi/sementonasa.xlsx'
 
@@ -89,7 +92,7 @@ weight=np.array([[0.36459012, 0.31979052, 0.31561936]])
 r=[0.36026144, 0.63973856]
 
 
-file1 = open("semen66.txt", "w+")
+file1 = open("semenfix0109.txt", "w+")
 # initialization
 stage1=[]
 for x in range(len(sups)+len(plant)):
@@ -101,19 +104,19 @@ stage3=[None]*len(distri)
 for x in range(len(distri)):
     stage3[x]=random.randint(1,len(up))
 
-population=np.array([[None]*3]*10)
-for x in range(10):
-    for y in range(3):
-        if y==0:
-            population[x][y]=random.sample(stage1, len(stage1))
-        elif y==1:
-            population[x][y]=random.sample(stage2, len(stage2))
-        else:
-            for z in range(len(distri)):
-                stage3[z]=random.randint(1,len(up))
-            population[x][y]=copy.deepcopy(stage3)
+# population=np.array([[None]*3]*1000)
+# for x in range(1000):
+#     for y in range(3):
+#         if y==0:
+#             population[x][y]=random.sample(stage1, len(stage1))
+#         elif y==1:
+#             population[x][y]=random.sample(stage2, len(stage2))
+#         else:
+#             for z in range(len(distri)):
+#                 stage3[z]=random.randint(1,len(up))
+#             population[x][y]=copy.deepcopy(stage3)
 
-population = [list(x) for x in population]
+# population = [list(x) for x in population]
 
 population =[[[2, 4, 5, 1, 3],
   [1, 4, 6, 5, 3, 2],
@@ -161,7 +164,7 @@ df = pd.DataFrame({
 mu = copy.deepcopy(population)
 lambdas =copy.deepcopy(population)
 generation = 0
-the_number_of_generation=100
+the_number_of_generation=2000
 while generation < the_number_of_generation:    
     print(generation)
     ### crossover
@@ -169,21 +172,15 @@ while generation < the_number_of_generation:
     temp=[]
     for i in range(len(lambdas)):
         random_crossover[i] = random.random()
-        if random_crossover[i]<0.5:
+        if random_crossover[i]<0.9:
             temp.append(random_crossover[i])
 
     if len(temp)%2!=0:
         temp.remove(temp[random.randint(0,len(temp)-1)])
-    parent = [[0]*2]*int(len(temp)/2)
-    index_parent =[[0]*2]*int(len(temp)/2)
-    for x in range(len(parent)):
-        for y in range(2):
-            if x != 0:
-                parent[x][y]=temp[x+y+1]
-                index_parent[x][y]=np.where(np.array(random_crossover)==temp[x+y+1])[0][0]
-            else:
-                parent[x][y]=temp[x+y]
-                index_parent[x][y]=np.where(np.array(random_crossover)==temp[x+y])[0][0]
+
+    parent = ordered(temp)
+    index_parent = [[ np.where(np.array(random_crossover)==j)[0][0] for j in i ]for i in parent]
+
     for x in range(len(index_parent)):
         children = crossover(lambdas[index_parent[x][0]], lambdas[index_parent[x][1]], sups, up, plant, distri)
         lambdas[index_parent[x][0]]=children[0]
@@ -192,7 +189,7 @@ while generation < the_number_of_generation:
     random_mutation = [0]*len(lambdas)
     for i in range(len(random_mutation)):
         random_mutation[i] = random.random()
-    index_parent = parentMutation(random_mutation, 0.7)
+    index_parent = parentMutation(random_mutation, 0.1)
     random_individu = random.randint(0,2)
     for x in range(len(index_parent)):
         if random_individu % 2 == 0:
@@ -202,44 +199,89 @@ while generation < the_number_of_generation:
         else:
             lambdas[index_parent[x]][1] = swapMutation(lambdas[index_parent[x]][1])
     mupluslambda = mu + lambdas
+    
     decode_mupluslambda=copy.deepcopy(mupluslambda)
     #### selection
     for x in range(len(mupluslambda)):
         decode_mupluslambda[x]=stage_1(pemasok, pabrik, pengantongan, distributor, 1, sups, plant, up, distri,mupluslambda[x][0],mupluslambda[x][1],mupluslambda[x][2],t,a).decode()
-    eval_mupluslambda=evaluate_problem2(decode_mupluslambda,sups, plant, up,distri,t,a,c,g,v,r[0],r[1],0.5,0.5)[0]
+    
+    evaluate = evaluate_problem2(decode_mupluslambda,sups, plant, up,distri,t,a,c,g,v,r[0],r[1],0.5,0.5)
+
+    eval_mupluslambda=evaluate[0]
+
+    # print("evalmupluslambda", evaluate)
+
+    # df2 = pd.DataFrame({
+    #                         "generasi":generation+1,
+    #                         "f1":evaluate[1],
+    #                         "f2":evaluate[2],
+    #                         "Optimal":evaluate[0]})
+            
+    # df = df.append(df2, ignore_index=True)
+
+
     newPopulation=[]
-    
+
     #dict.fromkeys() digunakan untuk membuat list tidak 
-    best_selection = sorted(list(dict.fromkeys(eval_mupluslambda)))[0:2]
-    afterSelectBest = copy.deepcopy(mupluslambda)
-    for i in range(len(best_selection)):
-        newPopulation.append(mupluslambda[eval_mupluslambda.index(best_selection[i])])
-        afterSelectBest.remove(mupluslambda[eval_mupluslambda.index(best_selection[i])])    
-    decode_afterSelectBest =[0]*len(afterSelectBest)
-    for x in range(len(afterSelectBest)):
-        decode_afterSelectBest[x]=stage_1(pemasok, pabrik, pengantongan, distributor,1, sups, plant, up, distri,afterSelectBest[x][0],afterSelectBest[x][1],afterSelectBest[x][2],t,a).decode()
-    eval_afterSelectBest = evaluate_problem2(decode_afterSelectBest,sups, plant, up,distri,t,a,c,g,v,r[0],r[1],0.5,0.5)[0] 
-    
-    bestOf = list(dict.fromkeys(eval_afterSelectBest))
-    if len(bestOf) == len(mu)-len(newPopulation):
-        for i in range(len(bestOf)):
-            newPopulation.append(mupluslambda[eval_mupluslambda.index(bestOf[i])])
+    best_selection = sorted(list(dict.fromkeys(eval_mupluslambda)))
+
+    if len(mu) == len(best_selection):
+        for i in best_selection:
+            newPopulation.append(mupluslambda[eval_mupluslambda.index(i)])
+
     else:
+        newPopulation = [mupluslambda[eval_mupluslambda.index(i)] for i in best_selection[0:2]]
         pop = randomPopulation(len(sups),len(plant),len(pengantongan),len(distributor), len(mu)-len(newPopulation))        
-        for i in range(len(pop)):
-            newPopulation.append(pop[i])
+        for i in pop:
+            newPopulation.append(i)
+
+
+    # afterSelectBest = copy.deepcopy(mupluslambda)
+    # for i in best_selection:
+    #     newPopulation.append(mupluslambda[eval_mupluslambda.index(i)])
+    #     afterSelectBest = list(filter(lambda x: x != mupluslambda[eval_mupluslambda.index(i])], afterSelectBest))
+    #     # afterSelectBest.remove(mupluslambda[eval_mupluslambda.index(best_selection[i])])    
+
+
+    # # decode_afterSelectBest =[0]*len(afterSelectBest)
+    # decode_afterSelectBest=dict()
+
+    # for x in afterSelectBest:
+    #     decode_afterSelectBest[str(x)]=stage_1(pemasok, pabrik, pengantongan, distributor,1, sups, plant, up, distri,x[0],x[1],x[2],t,a).decode()
+
+    # eval_afterSelectBest = evaluate_problem2(list(decode_afterSelectBest.values),sups, plant, up,distri,t,a,c,g,v,r[0],r[1],0.5,0.5)[0] 
+    
+    # print('#####################')
+    # print(eval_afterSelectBest)
+    # print('#####################')
+
+    '''
+    part berikut merupakan algoritma untuk memastikan bahwasanya apabila terdapat sejumlah individu berbeda yang dapat membentuk populasi baru maka dibentuk populasi baru dengan individu tersebut
+
+    namun apabila tidak maka akan diacak sejumlah individu untuk melengkapi terbentuknya populasi baru. 
+    '''
+
+    # bestOf = list(dict.fromkeys(eval_afterSelectBest))
+    # if len(bestOf) == len(mu)-len(newPopulation):
+    #     for i in bestOf:
+    #         newPopulation.append(mupluslambda[eval_mupluslambda.index(i)])
+    # else:
+    #     pop = randomPopulation(len(sups),len(plant),len(pengantongan),len(distributor), len(mu)-len(newPopulation))        
+    #     for i in range(len(pop)):
+    #         newPopulation.append(pop[i])
     
     decode_population =[0]*len(population)
     for x in range(len(population)):
         decode_population[x]=stage_1(pemasok, pabrik, pengantongan, distributor, 1, sups,plant, up, distri,newPopulation[x][0],newPopulation[x][1],newPopulation[x][2],t,a).decode()    
     greatPopulation200 = evaluate_problem2(decode_population,sups, plant, up,distri,t,a,c,g,v,r[0],r[1],0.5,0.5)
     
-    if (generation+1)%100==0:    
+    if (generation+1)%100==0:  
+    # print("greatPopulation ", greatPopulation200)
         df200 = pd.DataFrame({
-                            "generasi":generation+1,
-                            "f1":[greatPopulation200[1][greatPopulation200[0].index(min(greatPopulation200[0]))]],
-                            "f2":[greatPopulation200[2][greatPopulation200[0].index(min(greatPopulation200[0]))]],
-                            "Optimal":[greatPopulation200[0][greatPopulation200[0].index(min(greatPopulation200[0]))]]})
+                                "generasi":generation+1,
+                                "f1":[greatPopulation200[1][greatPopulation200[0].index(min(greatPopulation200[0]))]],
+                                "f2":[greatPopulation200[2][greatPopulation200[0].index(min(greatPopulation200[0]))]],
+                                "Optimal":[greatPopulation200[0][greatPopulation200[0].index(min(greatPopulation200[0]))]]})
             
         df = df.append(df200, ignore_index=True)
 
@@ -247,11 +289,14 @@ while generation < the_number_of_generation:
     lambdas = copy.deepcopy(mu)   
     generation = generation + 1
     
-        
+print("Populasi Baru")        
+for i in newPopulation:
+    print(i)
+
 decode_population =[0]*len(newPopulation)
 for x in range(len(newPopulation)):
     decode_population[x]=stage_1(pemasok, pabrik, pengantongan, distributor, 1, sups,plant, up, distri,newPopulation[x][0],newPopulation[x][1],newPopulation[x][2],t,a).decode()    
-greatPopulation = evaluate_problem2(decode_population,sups, plant, up,distri,t,a,c,g,v,r[0],r[1],0.5,0.5)
+greatPopulation = evaluate_problem2(decode_population,sups, plant, up,distri,t,a,c,g,v,r[0],r[1],0.7,0.3)
 
 print("Output Program \n")
 print("Nilai minimum hasil evaluasi : ", min(greatPopulation[0]))
@@ -303,20 +348,20 @@ print(newPopulation[ind])
 file1.write("decode final population #################\n")
 for x in decode_population:
     for y in x:
-        str_population = [str(z)+"\n" for z in y]
+        str_population = [re.sub("\s+","&", str(z)) +"\\" for z in y]
         file1.writelines(str_population)
         file1.write("\n\n")
     file1.write("##################################\n")
 
-df2 = pd.DataFrame({
-        "generasi":generation+1,
-        "f1":[greatPopulation[1][greatPopulation[0].index(min(greatPopulation[0]))]],
-        "f2":[greatPopulation[2][greatPopulation[0].index(min(greatPopulation[0]))]],
-        "Optimal":[greatPopulation[0][greatPopulation[0].index(min(greatPopulation[0]))]]})
-df = df.append(df2, ignore_index=True)
+# df2 = pd.DataFrame({
+#         "generasi":generation+1,
+#         "f1":[greatPopulation[1][greatPopulation[0].index(min(greatPopulation[0]))]],
+#         "f2":[greatPopulation[2][greatPopulation[0].index(min(greatPopulation[0]))]],
+#         "Optimal":[greatPopulation[0][greatPopulation[0].index(min(greatPopulation[0]))]]})
+# df = df.append(df2, ignore_index=True)
     
-export_excel = df.to_excel (r'/home/rudi/Documents/skripsi/selangseratus66.xlsx', index = None, header=True)
-export_excel2 = hubdistpeng.to_excel (r'/home/rudi/Documents/skripsi/hubdistpeng.xlsx', header=True)
+export_excel = df.to_excel (r'/home/rudi/Documents/skripsi/selangseratus0109.xlsx', index = None, header=True)
+export_excel2 = hubdistpeng.to_excel (r'/home/rudi/Documents/skripsi/hubdistpengfix.xlsx', header=True)
 
 plt.scatter(df['f1'],df['f2'], label="solusi optimal", color='r', s=15, marker="o")
 
@@ -324,4 +369,6 @@ plt.xlabel('f1')
 plt.ylabel('f2')
 plt.title('Grafik Optimal Pareto')
 plt.legend()
+plt.savefig('optimalparetosementonasafix.png')
 plt.show()
+

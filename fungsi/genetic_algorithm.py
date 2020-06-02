@@ -440,6 +440,40 @@ def sumOfNonDominated(Z):
     return summation, status
 
 
+def toBmatrix(matrices):
+    string_matrices = ''
+    for i in matrices:
+        if isinstance(i, np.ndarray):
+            matrix = '\\begin{bmatrix}\n'
+            for k in i:
+                for l in range(len(k)):
+                    matrix = matrix+str(int(k[l]))+'&' if l != len(k)-1 else matrix+str(int(k[l]))+'\\\\'
+            matrix = matrix+'\n'+ '\\end{bmatrix}\n'
+        else:
+            matrix = [str(k) for k in i]
+            matrix = ''.join(matrix)+'\n'
+        string_matrices = string_matrices+matrix+'\n\n'
+    return string_matrices
+
+def get_key(val): 
+    for key, value in my_dict.items(): 
+         if val == value: 
+             return key 
+  
+    return "key doesn't exist"
+
+def ordered(x):
+    # x harus genap jumlahnya
+    temp = list()
+    val = list()
+    for i in range(len(x)):                
+        if (i+1)%2!=0:
+            temp.append(x[i])
+        else:
+            temp.append(x[i])
+            val.append(temp)
+            temp = list()
+    return val
 
 # semen tonasa andi burhanuddin
 #def evaluation_semen(population, a, f, x, y, b, w,c):

@@ -52,9 +52,12 @@ from genetic_algorithm import evaluate_problem1
 from genetic_algorithm import evaluate_problem2
 #from genetic_algorithm import roulettewheelSelection
 from genetic_algorithm import enc_pop
+from genetic_algorithm import toBmatrix
+from genetic_algorithm import ordered
 #from genetic_algorithm import check_integer_enc
 from decoding_stage_1 import stage_1
 import copy
+import re
 
 supplier = ["s1","s2","s3"]
 plant = ["p1","p2","p3"]
@@ -77,7 +80,7 @@ v=[30,70,50,60]
 
 weight=np.array([[0.36459012, 0.31979052, 0.31561936]])
 r=[0.36026144, 0.63973856]
-the_number_of_generation=100
+the_number_of_generation=1000
 # initialization
 stage1=[]
 for x in range(len(sups)+len(plant)):
@@ -103,15 +106,16 @@ for x in range(len(d)):
 # population = [list(x) for x in population]   
 
 ######### documentation text
-file1 = open("process-genetic-algorithm66.txt", "w+")
+file1 = open("0109gencheng.txt", "w+")
 file1.write("##################################\n")
 file1.write("Inisialisasi\n")
 population = [[[2, 1, 4, 3, 5, 6], [7, 3, 2, 1, 6, 4, 5], [1, 1, 1, 3]], [[4, 1, 2, 3, 6, 5],[5, 3, 6, 4, 7, 1, 2],[4, 3, 2, 3]],[[3, 2, 1,6, 5, 4],[1, 5, 3, 4, 6, 7, 2],[2, 1, 1,1]],[[1,2,6, 5, 3, 4],[1, 5, 7, 6, 3, 2, 4],[2, 2, 4, 1]], [[4, 3, 1, 2, 5, 6],[1, 7, 5, 2, 6, 4, 3],[4, 1, 4, 1]]]
-for x in population:
-    for y in x:
+for x in range(len(population)):
+    file1.writelines("Individu "+str(x+1)+" & ")
+    for y in population[x]:
         str_population = [str(z)+" " for z in y]
         file1.writelines(str_population)
-    file1.write("\n")
+    file1.write("\\\\"+"\n")
 file1.write("##################################\n")
 #########
  
@@ -137,12 +141,11 @@ file1.write("##################################\n")
 file1.write("Inisialisasi decoding\n")
 
 for x in decode_population_pembanding:
-    for y in x:
-        str_population = [str(z)+"\n" for z in y]
-        file1.writelines(str_population)
-    file1.write("\n")
+    file1.write(toBmatrix(x))
+
 file1.write("##################################\n")
 ################
+print(population)
 mu = copy.deepcopy(population)
 lambdas =copy.deepcopy(population)
 
@@ -153,17 +156,17 @@ while generation < the_number_of_generation:
     ### crossover
     ############
     file1.write("##################################\n")
-    file1.write("crossover dengan pc= 0.5\n")
+    file1.write("crossover dengan pc= 0.9\n")
     
     file1.write("1. random nilai\n")
     random_crossover=[0]*len(mu)
-    temp=[]
+    temp=list()
     for i in range(len(lambdas)):
         random_crossover[i] = random.random()
         #
-        file1.write(str(random_crossover[i])+"\n")
+        file1.write('Individu '+str(i+1)+'&'+str(random_crossover[i])+"\\\\"+"\n")
         #
-        if random_crossover[i]<0.5:
+        if random_crossover[i]<0.9:
             temp.append(random_crossover[i])
     
     if len(temp)%2!=0:
@@ -171,44 +174,40 @@ while generation < the_number_of_generation:
     #
     file1.write("2. parents \n")
     file1.write(str(temp)+"\n")
-    #
-    parent = [[0]*2]*int(len(temp)/2)
-    index_parent =[[0]*2]*int(len(temp)/2)
-    for x in range(len(parent)):
-        for y in range(2):
-            if x != 0:
-                parent[x][y]=temp[x+y+1]
-                index_parent[x][y]=np.where(np.array(random_crossover)==temp[x+y+1])[0][0]
-            else:
-                parent[x][y]=temp[x+y]
-                index_parent[x][y]=np.where(np.array(random_crossover)==temp[x+y])[0][0]
+    
+    parent = ordered(temp)
+    index_parent = [[ np.where(np.array(random_crossover)==j)[0][0] for j in i ]for i in parent]
+
     for x in range(len(index_parent)):
         children = crossover(lambdas[index_parent[x][0]], lambdas[index_parent[x][1]], sups, W, D, d)
         lambdas[index_parent[x][0]]=children[0]
         lambdas[index_parent[x][1]]=children[1]
+
     ##output crossover
     file1.write("3. new population \n")
-    for x in lambdas:
-        for y in x:
+    
+    for x in range(len(lambdas)):
+        file1.writelines("Individu "+ str(x+1) +"& ")
+        for y in lambdas[x]:
             str_population = [str(z)+" " for z in y]
             file1.writelines(str_population)
-        file1.write("\n")
+        file1.write("\\\\"+"\n")
     file1.write("##################################\n")
     ############
     
 #    ### mutation
     file1.write("##################################\n")
-    file1.write("mutasi dengan Pm = 0.7\n")
+    file1.write("mutasi dengan Pm = 0.1\n")
     file1.write("1. random nilai \n")
     random_mutation = [0]*len(lambdas)
     for i in range(len(random_mutation)):
         random_mutation[i] = random.random()
         
-        file1.write(str(random_mutation[i])+"\n")
+        file1.write('Individu '+str(i+1)+'&'+str(random_mutation[i])+"\\\\"+"\n")
         
-    index_parent = parentMutation(random_mutation, 0.7)
+    index_parent = parentMutation(random_mutation, 0.1)
     file1.write("2. parents \n")
-    file1.write(str(index_parent)+"\n")
+    file1.write(str([i+1 for i in index_parent])+"\n")
     file1.write("3. pemilihan stage \n")
     random_individu = random.randint(0,2)
     for x in range(len(index_parent)):
@@ -228,11 +227,12 @@ while generation < the_number_of_generation:
 
     ############
     file1.write("####populasi setelah dimutasi \n")
-    for x in lambdas:
-        for y in x:
+    for x in range(len(lambdas)):
+        file1.writelines("Individu "+str(x+1)+" & ")
+        for y in lambdas[x]:
             str_population = [str(z)+" " for z in y]
             file1.writelines(str_population)
-        file1.write("\n")
+        file1.write("\\\\"+"\n")
     file1.write("##################################\n")
     ############
 
@@ -240,12 +240,23 @@ while generation < the_number_of_generation:
     mupluslambda = mu + lambdas
     decode_mupluslambda=copy.deepcopy(mupluslambda)
     
-    
+    file1.write("####populasi mupluslmabda \n")
+    for x in range(len(mupluslambda)):
+        file1.writelines("Individu "+str(x+1)+" & ")
+        for y in mupluslambda[x]:
+            str_population = [str(z)+" " for z in y]
+            file1.writelines(str_population)
+        file1.write("\\\\"+"\n")
+    file1.write("##################################\n")
 #### selection
     
     for x in range(len(mupluslambda)):
         decode_mupluslambda[x]=stage_1(supplier, plant, dc, customer, 1, sups, D, W, d,mupluslambda[x][0],mupluslambda[x][1],mupluslambda[x][2],t,a).decode()
-    eval_mupluslambda=evaluate_problem2(decode_mupluslambda,sups, D, W,d,t,a,c,g,v,r[0],r[1],0.5,0.5)[0]
+    
+    evaluate = evaluate_problem2(decode_mupluslambda,sups, D, W,d,t,a,c,g,v,r[0],r[1],0.5,0.5)
+
+    
+    eval_mupluslambda= evaluate[0]
     newPopulation=[]
     
     ############
@@ -253,52 +264,72 @@ while generation < the_number_of_generation:
     file1.write("decode muplus lambda\n")
     
     for x in decode_mupluslambda:
-        for y in x:
-            str_population = [str(z)+"\n" for z in y]
-            file1.writelines(str_population)
-            file1.write("\n\n")
+        file1.write(toBmatrix(x))
     file1.write("##################################\n")
     ############
+
+    file1.write("& $f_{1}$ sebelum normal & $f_{2}$ sebelum normal \\\\\n")
+    for x in range(len(evaluate[5])):        
+        file1.write("Individu "+ str(x+1)+" & " +str(evaluate[1][x])+" & "+str(evaluate[2][x])+"\\\\\n")
+
+    file1.write("##################################\n")
+
+    file1.write("& $f_{1}$ setelah normal & $f_{2}$ setelah normal \\\\\n")
+    for x in range(len(evaluate[5])):
+        file1.write("Individu "+ str(x+1)+" & " +str(evaluate[4][x])+" & "+str(evaluate[5][x])+"\\\\\n")
+
+
     file1.write("##################################\n")
     
     file1.write("eval muplus lambda\n")
     
-    for x in eval_mupluslambda:
-        file1.write(str(x)+"\n")
+    for x in range(len(eval_mupluslambda)):
+        file1.write("Individu "+str(x+1)+" & "+str(eval_mupluslambda[x])+"\\\\"+"\n")
     file1.write("##################################\n")
     
     #dict.fromkeys() digunakan untuk membuat list tidak terdapat duplikat
 #    print('tipe data eval_mu', type(eval_mupluslambda))
-    best_selection = sorted(list(dict.fromkeys(eval_mupluslambda)))[0:2]
-    afterSelectBest = copy.deepcopy(mupluslambda)
-    for i in range(len(best_selection)):
-        newPopulation.append(mupluslambda[eval_mupluslambda.index(best_selection[i])])
-        afterSelectBest.remove(mupluslambda[eval_mupluslambda.index(best_selection[i])])    
+    # best_selection = sorted(list(dict.fromkeys(eval_mupluslambda)))[0:2]
+    # afterSelectBest = copy.deepcopy(mupluslambda)
+    # for i in range(len(best_selection)):
+    #     newPopulation.append(mupluslambda[eval_mupluslambda.index(best_selection[i])])
+    #     afterSelectBest.remove(mupluslambda[eval_mupluslambda.index(best_selection[i])])    
         
-    decode_afterSelectBest =[0]*len(afterSelectBest)
-    for x in range(len(afterSelectBest)):
-        decode_afterSelectBest[x]=stage_1(supplier, plant, dc, customer, 1, sups, D, W, d,afterSelectBest[x][0],afterSelectBest[x][1],afterSelectBest[x][2],t,a).decode()
-    eval_afterSelectBest = evaluate_problem2(decode_afterSelectBest,sups, D, W,d,t,a,c,g,v,r[0],r[1],0.5,0.5)[0] 
+    # decode_afterSelectBest =[0]*len(afterSelectBest)
+    # for x in range(len(afterSelectBest)):
+    #     decode_afterSelectBest[x]=stage_1(supplier, plant, dc, customer, 1, sups, D, W, d,afterSelectBest[x][0],afterSelectBest[x][1],afterSelectBest[x][2],t,a).decode()
+    # eval_afterSelectBest = evaluate_problem2(decode_afterSelectBest,sups, D, W,d,t,a,c,g,v,r[0],r[1],0.5,0.5)[0] 
     
-    bestOf = list(dict.fromkeys(eval_afterSelectBest))
-    if len(bestOf) == len(mu)-len(newPopulation):
-        for i in range(len(bestOf)):
-            newPopulation.append(mupluslambda[eval_mupluslambda.index(best_selection[i])])
+    # bestOf = list(dict.fromkeys(eval_afterSelectBest))
+    # if len(bestOf) == len(mu)-len(newPopulation):
+    #     for i in range(len(bestOf)):
+    #         newPopulation.append(mupluslambda[eval_mupluslambda.index(best_selection[i])])
+    # else:
+    #     pop = randomPopulation(len(sups),len(plant),len(dc),len(customer), len(mu)-len(newPopulation))        
+    #     for i in range(len(pop)):
+    #         newPopulation.append(pop[i])
+    best_selection = sorted(list(dict.fromkeys(eval_mupluslambda)))
+
+    if len(mu) == len(best_selection):
+        for i in best_selection:
+            newPopulation.append(mupluslambda[eval_mupluslambda.index(i)])
+
     else:
+        newPopulation = [mupluslambda[eval_mupluslambda.index(i)] for i in best_selection[0:2]]
         pop = randomPopulation(len(sups),len(plant),len(dc),len(customer), len(mu)-len(newPopulation))        
-        for i in range(len(pop)):
-            newPopulation.append(pop[i])
-    
+        for i in pop:
+            newPopulation.append(i)
     
     ############
     file1.write("##################################\n")
     file1.write("populasi baru \n")
 
-    for x in newPopulation:
-        for y in x:
+    for x in range(len(newPopulation)):
+        file1.write("Individu "+str(x+1)+" & ")
+        for y in newPopulation[x]:
             str_population = [str(z)+" " for z in y]
             file1.writelines(str_population)
-        file1.write("\n")
+        file1.write("\\\\"+"\n")
     file1.write("##################################\n")
     ############
     
@@ -372,15 +403,14 @@ for i in range(len(decode_population[ind])):
 
 print("Dengan kata lain individu optimal adalah intividu ke-",ind,"yaitu \n")
 print(newPopulation[ind])
+optchr = ''.join(''.join([str(j) for j in i]) for i in newPopulation[ind])
+print(optchr)
 file1.write("decode final population #################\n")
 for x in decode_population:
-    for y in x:
-        str_population = [str(z)+"\n" for z in y]
-        file1.writelines(str_population)
-        file1.write("\n\n")
+    file1.write(toBmatrix(x))
     file1.write("##################################\n")
 
-export_excel = df.to_excel (r'/home/rudi/Documents/skripsi/gen66.xlsx', index = None, header=True)
+export_excel = df.to_excel (r'/home/rudi/Documents/skripsi/0109gencheng.xlsx', index = None, header=True)
 file1.close()
 
 plt.scatter(df['f1'],df['f2'], label="solusi optimal", color='r', s=15, marker="o")

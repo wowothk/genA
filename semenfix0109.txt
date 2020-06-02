@@ -1,0 +1,180 @@
+decode final population #################
+[&0.&0.&849902.&0.]\
+
+[0.&0.]\[0.&0.]\[469850.&380052.]\[0.&0.]\
+
+[&0&39800&28900&0&0&0&30500&29400&0&0&0&21000&44000&0&27890&20200&30160&44000&0&47800&0&30800&0&37200&38200&0&0&0]\[31800&0&0&29870&29100&22000&0&0&41002&39800&19780&0&0&24000&0&0&0&0&15900&0&16900&0&33100&0&0&34800&35000&7000]\
+
+0\0\1\0\
+
+1\1\
+
+##################################
+[&0.&0.&849902.&0.]\
+
+[0.&0.]\[0.&0.]\[458962.&390940.]\[0.&0.]\
+
+[31800&0&0&0&29100&22000&30500&29400&41002&0&0&21000&44000&24000&0&0&30160&0&15900&47800&16900&0&0&37200&38200&0&0&0]\[&0&39800&28900&29870&0&0&0&0&0&39800&19780&0&0&0&27890&20200&0&44000&0&0&0&30800&33100&0&0&34800&35000&7000]\
+
+0\0\1\0\
+
+1\1\
+
+##################################
+[&0.&0.&849902.&0.]\
+
+[0.&0.]\[0.&0.]\[313190.&536712.]\[0.&0.]\
+
+[&0&0&0&0&0&22000&30500&0&0&0&0&0&0&24000&27890&0&0&0&0&47800&16900&30800&33100&0&38200&0&35000&7000]\[31800&39800&28900&29870&29100&0&0&29400&41002&39800&19780&21000&44000&0&0&20200&30160&44000&15900&0&0&0&0&37200&0&34800&0&0]\
+
+0\0\1\0\
+
+1\1\
+
+##################################
+[&0.&0.&849902.&0.]\
+
+[0.&0.]\[0.&0.]\[362212.&487690.]\[0.&0.]\
+
+[&0&39800&0&29870&0&0&0&0&41002&0&19780&21000&0&0&0&0&30160&44000&15900&0&16900&30800&0&0&38200&34800&0&0]\[31800&0&28900&0&29100&22000&30500&29400&0&39800&0&0&44000&24000&27890&20200&0&0&0&47800&0&0&33100&37200&0&0&35000&7000]\
+
+0\1\1\0\
+
+1\1\
+
+##################################
+[&0.&0.&0.&849902.]\
+
+[0.&0.]\[0.&0.]\[0.&0.]\[403970.&445932.]\
+
+[31800&39800&0&0&29100&0&0&29400&0&0&19780&21000&44000&24000&27890&20200&0&44000&0&0&0&0&0&0&38200&34800&0&0]\[&0&0&28900&29870&0&22000&30500&0&41002&39800&0&0&0&0&0&0&30160&0&15900&47800&16900&30800&33100&37200&0&0&35000&7000]\
+
+0\0\0\1\
+
+1\1\
+
+##################################
+[&0.&0.&0.&849902.]\
+
+[0.&0.]\[0.&0.]\[0.&0.]\[532730.&317172.]\
+
+[31800&39800&0&29870&0&0&30500&0&0&39800&0&21000&44000&24000&0&0&30160&44000&15900&47800&16900&0&0&37200&38200&34800&0&7000]\[&0&0&28900&0&29100&22000&0&29400&41002&0&19780&0&0&0&27890&20200&0&0&0&0&0&30800&33100&0&0&0&35000&0]\
+
+0\0\0\1\
+
+1\1\
+
+##################################
+[&0.&590000.&259902.&0.]\
+
+[0.&0.]\[392400.&197600.]\[&0.&259902.]\[0.&0.]\
+
+[31800&0&28900&0&0&22000&30500&29400&0&0&0&21000&0&24000&0&0&0&44000&0&0&16900&30800&33100&0&38200&34800&0&7000]\[&0&39800&0&29870&29100&0&0&0&41002&39800&19780&0&44000&0&27890&20200&30160&0&15900&47800&0&0&0&37200&0&0&35000&0]\
+
+0\1\1\0\
+
+1\1\
+
+##################################
+[&0.&0.&849902.&0.]\
+
+[0.&0.]\[0.&0.]\[331992.&517910.]\[0.&0.]\
+
+[&0&39800&0&0&29100&0&30500&0&41002&0&0&21000&0&0&27890&0&0&0&15900&0&16900&0&33100&0&0&34800&35000&7000]\[31800&0&28900&29870&0&22000&0&29400&0&39800&19780&0&44000&24000&0&20200&30160&44000&0&47800&0&30800&0&37200&38200&0&0&0]\
+
+0\0\1\0\
+
+1\1\
+
+##################################
+[590000.&259902.&0.&0.]\
+
+[329540.&260460.]\[&0.&259902.]\[0.&0.]\[0.&0.]\
+
+[&0&39800&0&29870&29100&0&30500&0&0&39800&19780&21000&0&0&27890&0&0&44000&0&47800&0&0&0&0&0&0&0&0]\[31800&0&28900&0&0&22000&0&29400&41002&0&0&0&44000&24000&0&20200&30160&0&15900&0&16900&30800&33100&37200&38200&34800&35000&7000]\
+
+1\1\0\0\
+
+1\1\
+
+##################################
+[&0.&0.&849902.&0.]\
+
+[0.&0.]\[0.&0.]\[253870.&596032.]\[0.&0.]\
+
+[31800&0&28900&29870&29100&22000&0&0&0&0&0&0&44000&24000&0&0&0&0&0&0&0&0&0&37200&0&0&0&7000]\[&0&39800&0&0&0&0&30500&29400&41002&39800&19780&21000&0&0&27890&20200&30160&44000&15900&47800&16900&30800&33100&0&38200&34800&35000&0]\
+
+0\0\1\0\
+
+1\1\
+
+##################################
+
+
+Populasi Baru
+[[2, 4, 3, 1, 5], [5, 2, 6, 1, 4, 3], [2, 1, 1, 2, 2, 2, 1, 1, 2, 2, 2, 1, 1, 2, 1, 1, 1, 1, 2, 1, 2, 1, 2, 1, 1, 2, 2, 2]]
+[[1, 3, 4, 2, 5], [3, 4, 6, 2, 1, 5], [1, 2, 2, 2, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 2, 2, 1, 2, 1, 1, 1, 2, 2, 1, 1, 2, 2, 2]]
+[[5, 2, 4, 1, 3], [1, 4, 6, 5, 3, 2], [2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 1, 1, 1, 1, 2, 1, 2, 1, 1]]
+[[5, 4, 1, 3, 2], [2, 4, 3, 1, 6, 5], [2, 1, 2, 1, 2, 2, 2, 2, 1, 2, 1, 1, 2, 2, 2, 2, 1, 1, 1, 2, 1, 1, 2, 2, 1, 1, 2, 2]]
+[[2, 3, 1, 4, 5], [1, 5, 3, 6, 2, 4], [1, 1, 2, 2, 1, 2, 2, 1, 2, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2]]
+[[5, 1, 3, 4, 2], [4, 2, 3, 5, 1, 6], [1, 1, 2, 1, 2, 2, 1, 2, 2, 1, 2, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 2, 1]]
+[[1, 3, 2, 4, 5], [2, 6, 5, 4, 1, 3], [1, 2, 1, 2, 2, 1, 1, 1, 2, 2, 2, 1, 2, 1, 2, 2, 2, 1, 2, 2, 1, 1, 1, 2, 1, 1, 2, 1]]
+[[5, 1, 2, 3, 4], [4, 1, 6, 3, 2, 5], [2, 1, 2, 2, 1, 2, 1, 2, 1, 2, 2, 1, 2, 2, 1, 2, 2, 2, 1, 2, 1, 2, 1, 2, 2, 1, 1, 1]]
+[[5, 4, 3, 2, 1], [5, 4, 3, 2, 6, 1], [2, 1, 2, 1, 1, 2, 1, 2, 2, 1, 1, 1, 2, 2, 1, 2, 2, 1, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2]]
+[[2, 5, 3, 4, 1], [1, 2, 6, 5, 3, 4], [1, 2, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 1]]
+Output Program
+
+Nilai minimum hasil evaluasi :  0.22028570153986787
+dengan nilai dari masing-masing fungsi obyek sebagai berikut:
+
+f1 =  176244265125 / dalam bentuk normalisasi  0.0
+f2 =  0.3345899286168646 / dalam bentuk normalisasi  0.7342856717995596
+
+ Setelah didekodekan diperoleh bahwa
+Banyak bahan yang dikirim dari pemasok  pemasok1  ke pabrik  Tonasa 4  sebanyak  849902.0
+
+
+Banyak bahan yang dikirim dari pabrik  Tonasa 4  ke gudang  Biringkassi  sebanyak  253870.0
+Banyak bahan yang dikirim dari pabrik  Tonasa 4  ke gudang  Makasar  sebanyak  596032.0
+
+
+Banyak bahan yang dikirim dari pengantongan  Biringkassi  ke distributor  CV. Karya Baru  sebanyak  31800
+Banyak bahan yang dikirim dari pengantongan  Biringkassi  ke distributor  PT. Mega Indah Sari Timor  sebanyak  28900
+Banyak bahan yang dikirim dari pengantongan  Biringkassi  ke distributor  PT. Mitra Pembangunan Nusantara  sebanyak  29870
+Banyak bahan yang dikirim dari pengantongan  Biringkassi  ke distributor  UD. Multi Guna Rejeki  sebanyak  29100
+Banyak bahan yang dikirim dari pengantongan  Biringkassi  ke distributor  PT. Prima Karya Manunggal  sebanyak  22000
+Banyak bahan yang dikirim dari pengantongan  Biringkassi  ke distributor  UD. Pelita Indah – Mks  sebanyak  44000
+Banyak bahan yang dikirim dari pengantongan  Biringkassi  ke distributor  UD. Pertama  sebanyak  24000
+Banyak bahan yang dikirim dari pengantongan  Biringkassi  ke distributor  CV. Semento Pratama  sebanyak  37200
+Banyak bahan yang dikirim dari pengantongan  Biringkassi  ke distributor  Rinzhu Lalogau Engineriing Contruction  sebanyak  7000
+Banyak bahan yang dikirim dari pengantongan  Makasar  ke distributor  Kokpar Semen Tonasa  sebanyak  39800
+Banyak bahan yang dikirim dari pengantongan  Makasar  ke distributor  PT. Padi Mas Prima  sebanyak  30500
+Banyak bahan yang dikirim dari pengantongan  Makasar  ke distributor  CV. Bintang Mas Jaya  sebanyak  29400
+Banyak bahan yang dikirim dari pengantongan  Makasar  ke distributor  PT. Catut Kencana Sakti  sebanyak  41002
+Banyak bahan yang dikirim dari pengantongan  Makasar  ke distributor  CV. Gajaco Utama  sebanyak  39800
+Banyak bahan yang dikirim dari pengantongan  Makasar  ke distributor  CV. Ichal Mutiara  sebanyak  19780
+Banyak bahan yang dikirim dari pengantongan  Makasar  ke distributor  CV. Indah Sari  sebanyak  21000
+Banyak bahan yang dikirim dari pengantongan  Makasar  ke distributor  PT. Rajawali Jaya Sakti  sebanyak  27890
+Banyak bahan yang dikirim dari pengantongan  Makasar  ke distributor  CV. Sinar Dagang  sebanyak  20200
+Banyak bahan yang dikirim dari pengantongan  Makasar  ke distributor  UD. Tirograha Niaga  sebanyak  30160
+Banyak bahan yang dikirim dari pengantongan  Makasar  ke distributor  PT. HS. Bangunan  sebanyak  44000
+Banyak bahan yang dikirim dari pengantongan  Makasar  ke distributor  Perusda Perdagangan Umum  sebanyak  15900
+Banyak bahan yang dikirim dari pengantongan  Makasar  ke distributor  Perusahaan Daerah Bajiminasa  sebanyak  47800
+Banyak bahan yang dikirim dari pengantongan  Makasar  ke distributor  PT. Ta’disangka  sebanyak  16900
+Banyak bahan yang dikirim dari pengantongan  Makasar  ke distributor  UD. Jaya Mandiri  sebanyak  30800
+Banyak bahan yang dikirim dari pengantongan  Makasar  ke distributor  Kopeerasi Perdagangan Indonesia  sebanyak  33100
+Banyak bahan yang dikirim dari pengantongan  Makasar  ke distributor  Sun Lik Internasional Energy  sebanyak  38200
+Banyak bahan yang dikirim dari pengantongan  Makasar  ke distributor  CV. Empos Tiran  sebanyak  34800
+Banyak bahan yang dikirim dari pengantongan  Makasar  ke distributor  Perusahaan Daerah Gowa Mandidri  sebanyak  35000
+
+
+Dalam hal ini pabrik yang beroperasi adalah
+pabrik   Tonasa 4
+
+
+Dalam hal ini pengantongan yang beroperasi adalah
+pengantongan   Biringkassi
+pengantongan   Makasar
+Dengan kata lain individu optimal adalah intividu ke- 9 yaitu
+
+[[2, 5, 3, 4, 1], [1, 2, 6, 5, 3, 4], [1, 2, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 1]]

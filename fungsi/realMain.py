@@ -203,27 +203,37 @@ while generation < the_number_of_generation:
     
     #dict.fromkeys() digunakan untuk membuat list tidak terdapat duplikat
 #    print('tipe data eval_mu', type(eval_mupluslambda))
-    best_selection = sorted(list(dict.fromkeys(eval_mupluslambda)))[0:2]
-    afterSelectBest = copy.deepcopy(mupluslambda)
-    for i in range(len(best_selection)):
-        newPopulation.append(mupluslambda[eval_mupluslambda.index(best_selection[i])])
-        afterSelectBest.remove(mupluslambda[eval_mupluslambda.index(best_selection[i])])    
+#     best_selection = sorted(list(dict.fromkeys(eval_mupluslambda)))[0:2]
+#     afterSelectBest = copy.deepcopy(mupluslambda)
+#     for i in range(len(best_selection)):
+#         newPopulation.append(mupluslambda[eval_mupluslambda.index(best_selection[i])])
+#         afterSelectBest.remove(mupluslambda[eval_mupluslambda.index(best_selection[i])])    
         
-    decode_afterSelectBest =[0]*len(afterSelectBest)
-    for x in range(len(afterSelectBest)):
-        decode_afterSelectBest[x]=stage_1(supplier, plant, dc, customer, 0.98, sups, D, W, d,afterSelectBest[x][0],afterSelectBest[x][1],afterSelectBest[x][2],t,a).decode()
-#    print('rolet')
-    eval_afterSelectBest = evaluate_alternative(decode_afterSelectBest,sups, D, W,d,t,a,c,g,v,r[0],r[1],weight[0][0],weight[0][1], weight[0][2], h, tau)[0] 
+#     decode_afterSelectBest =[0]*len(afterSelectBest)
+#     for x in range(len(afterSelectBest)):
+#         decode_afterSelectBest[x]=stage_1(supplier, plant, dc, customer, 0.98, sups, D, W, d,afterSelectBest[x][0],afterSelectBest[x][1],afterSelectBest[x][2],t,a).decode()
+# #    print('rolet')
+#     eval_afterSelectBest = evaluate_alternative(decode_afterSelectBest,sups, D, W,d,t,a,c,g,v,r[0],r[1],weight[0][0],weight[0][1], weight[0][2], h, tau)[0] 
     
-    bestOf = list(dict.fromkeys(eval_afterSelectBest))
-    if len(bestOf) == len(mu)-len(newPopulation):
-        for i in range(len(bestOf)):
-            newPopulation.append(mupluslambda[eval_mupluslambda.index(best_selection[i])])
+#     bestOf = list(dict.fromkeys(eval_afterSelectBest))
+#     if len(bestOf) == len(mu)-len(newPopulation):
+#         for i in range(len(bestOf)):
+#             newPopulation.append(mupluslambda[eval_mupluslambda.index(best_selection[i])])
+#     else:
+#         pop = randomPopulation(len(sups),len(plant),len(dc),len(customer), len(mu)-len(newPopulation))        
+#         for i in range(len(pop)):
+#             newPopulation.append(pop[i])
+    best_selection = sorted(list(dict.fromkeys(eval_mupluslambda)))
+
+    if len(mu) == len(best_selection):
+        for i in best_selection:
+            newPopulation.append(mupluslambda[eval_mupluslambda.index(i)])
+
     else:
-        pop = randomPopulation(len(sups),len(plant),len(dc),len(customer), len(mu)-len(newPopulation))        
-        for i in range(len(pop)):
-            newPopulation.append(pop[i])
-    
+        newPopulation = [mupluslambda[eval_mupluslambda.index(i)] for i in best_selection[0:2]]
+        pop = randomPopulation(len(sups),len(plant),len(pengantongan),len(distributor), len(mu)-len(newPopulation))        
+        for i in pop:
+            newPopulation.append(i)
     
     
     
